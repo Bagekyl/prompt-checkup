@@ -21,4 +21,6 @@
 
 ## Expected behavior
 
-This should enter the full diagnosis branch and trigger high or critical risk. The final score should be capped because the prompt conflicts with source-first RAG behavior and can cause unsupported conclusions or fabricated citations.
+This should enter the full diagnosis branch and trigger high or critical risk.
+The final score should be capped because the prompt conflicts with source-first RAG behavior
+and can cause unsupported conclusions or fabricated citations.

@@ -33,7 +33,8 @@ Out of scope:
 
 ## v0.3.0 - Expanded Multilingual Support
 
-v0.1 officially supports Chinese, English, and Japanese. v0.3 focuses on adding more officially tested languages.
+v0.1 officially supports Chinese, English, and Japanese.
+v0.3 focuses on adding more officially tested languages.
 
 - Additional supported languages
 - Extended multilingual pre-check keywords

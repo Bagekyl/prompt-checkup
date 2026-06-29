@@ -1,6 +1,7 @@
 # Contributing
 
-PromptCheckup v0.1 is a Dify Chatflow project. Keep changes small, reproducible, and documented.
+PromptCheckup v0.1 is a Dify Chatflow project.
+Keep changes small, reproducible, and documented.
 
 - `main` branch contains stable releases.
 - Feature branches should use names like `feature/web-ui`.
