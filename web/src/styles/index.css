@@ -28,21 +28,100 @@ textarea {
   color: #3f2869;
 }
 
-.prose table {
-  display: block;
+.report-markdown {
+  color: #1f2937;
+}
+
+.report-markdown .report-table-wrap {
   width: 100%;
+  margin: 1.35rem 0;
   overflow-x: auto;
-  border-collapse: collapse;
+  border: 1px solid #eee7fb;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 12px 34px rgba(73, 45, 122, 0.07);
 }
 
-.prose th,
-.prose td {
-  border-width: 1px;
-  padding: 0.7rem 0.85rem;
+.report-markdown table {
+  width: 100%;
+  min-width: 560px;
+  margin: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.94rem;
+  line-height: 1.55;
 }
 
-.prose pre {
+.report-markdown thead {
+  background: linear-gradient(180deg, #fbf8ff 0%, #f7f2ff 100%);
+}
+
+.report-markdown th {
+  color: #3f2869;
+  font-weight: 700;
+  text-align: left;
+}
+
+.report-markdown th,
+.report-markdown td {
+  border-right: 1px solid #eee7fb;
+  border-bottom: 1px solid #eee7fb;
+  padding: 0.95rem 1.05rem;
+  vertical-align: top;
+}
+
+.report-markdown th:last-child,
+.report-markdown td:last-child {
+  border-right: 0;
+}
+
+.report-markdown tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.report-markdown tbody tr:nth-child(even) {
+  background: #fdfbff;
+}
+
+.report-markdown pre {
+  overflow-x: auto;
+  border: 1px solid #e9d5ff;
+  border-radius: 18px;
+  background: #faf7ff;
+  color: #1f2937;
+  padding: 1.05rem 1.15rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  line-height: 1.78;
   white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.report-markdown pre code {
+  background: transparent;
+  color: inherit;
+  font-size: 0.92rem;
+  line-height: inherit;
+  white-space: pre-wrap;
+}
+
+.report-markdown :not(pre) > code {
+  border: 1px solid #eadcff;
+  border-radius: 0.45rem;
+  background: #fbf8ff;
+  color: #4c2c84;
+  padding: 0.12rem 0.35rem;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .report-markdown table {
+    min-width: 500px;
+  }
+
+  .report-markdown th,
+  .report-markdown td {
+    padding: 0.82rem 0.9rem;
+  }
 }
 
 .report-stream {

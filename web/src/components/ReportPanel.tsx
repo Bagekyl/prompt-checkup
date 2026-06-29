@@ -1,6 +1,7 @@
 import { Clipboard, ClipboardCheck, Code2, Download, FileText, Wand2 } from 'lucide-react';
 import type { ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
+import type { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import type { Dictionary } from '../i18n';
 import type { MockReport } from '../lib/mockReport';
@@ -12,6 +13,16 @@ type ReportPanelProps = {
   showToast: (message: string) => void;
   status: ReportStatus;
   t: Dictionary;
+};
+
+const markdownComponents: Components = {
+  table({ node: _node, ...props }) {
+    return (
+      <div className="report-table-wrap">
+        <table {...props} />
+      </div>
+    );
+  }
 };
 
 export default function ReportPanel({ report, showToast, status, t }: ReportPanelProps) {
@@ -71,9 +82,11 @@ export default function ReportPanel({ report, showToast, status, t }: ReportPane
         {status === 'report' ? (
           <article
             aria-live="polite"
-            className="report-stream prose prose-slate max-w-none prose-headings:tracking-tight prose-h1:text-3xl prose-h2:text-xl prose-pre:border prose-pre:border-lavender-100 prose-pre:bg-slate-950 prose-code:text-lavender-700 prose-pre:shadow-inner prose-table:overflow-hidden prose-th:bg-lavender-50 prose-th:text-slate-700 prose-td:border-lavender-100 prose-th:border-lavender-100"
+            className="report-stream report-markdown prose prose-slate max-w-none prose-headings:tracking-tight prose-h1:text-3xl prose-h2:text-xl"
           >
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{visibleReport}</ReactMarkdown>
+            <ReactMarkdown components={markdownComponents} remarkPlugins={[remarkGfm]}>
+              {visibleReport}
+            </ReactMarkdown>
           </article>
         ) : null}
       </div>
