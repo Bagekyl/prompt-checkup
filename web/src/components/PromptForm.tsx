@@ -2,11 +2,13 @@ import { ClipboardPenLine, Eraser, Play, Sparkles } from 'lucide-react';
 import type { Dictionary, Language } from '../i18n';
 
 export type ReviewDepth = 'quick' | 'standard' | 'deep' | 'optimizedOnly' | 'strict';
+export type TaskType = 'general' | 'learning' | 'writing' | 'content' | 'rag' | 'coding' | 'data' | 'translation' | 'custom';
 
 export type PromptFormState = {
+  customTaskType: string;
   prompt: string;
   taskDescription: string;
-  taskType: string;
+  taskType: TaskType;
   context: string;
   outputRequirements: string;
   reviewDepth: ReviewDepth;
@@ -60,13 +62,30 @@ export default function PromptForm({ form, onChange, onClear, onFillExample, onS
             placeholder={t.form.taskDescription.placeholder}
             value={form.taskDescription}
           />
-          <TextField
-            label={t.form.taskType.label}
-            onChange={(value) => update('taskType', value)}
-            placeholder={t.form.taskType.placeholder}
-            value={form.taskType}
-          />
+          <label className="block">
+            <span className="mb-2 block text-sm font-semibold text-slate-800">{t.form.taskType.label}</span>
+            <select
+              className={fieldClasses}
+              onChange={(event) => update('taskType', event.target.value as TaskType)}
+              value={form.taskType}
+            >
+              {t.form.taskType.options.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
+
+        {form.taskType === 'custom' ? (
+          <TextField
+            label={t.form.taskType.customLabel}
+            onChange={(value) => update('customTaskType', value)}
+            placeholder={t.form.taskType.customPlaceholder}
+            value={form.customTaskType}
+          />
+        ) : null}
 
         <label className="block">
           <span className="mb-2 block text-sm font-semibold text-slate-800">{t.form.context.label}</span>
@@ -104,30 +123,30 @@ export default function PromptForm({ form, onChange, onClear, onFillExample, onS
         </label>
       </div>
 
-      <div className="mt-5 grid gap-3 sm:grid-cols-[1fr_auto_auto]">
+      <div className="mt-5 flex flex-col gap-3 xl:flex-row">
         <button
-          className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-lavender-600 px-5 text-sm font-semibold text-white shadow-lg shadow-lavender-300/30 transition hover:bg-lavender-700"
+          className="inline-flex min-h-12 w-full min-w-0 items-center justify-center gap-2 rounded-2xl bg-lavender-600 px-5 py-3 text-center text-sm font-semibold leading-snug text-white shadow-lg shadow-lavender-300/30 transition hover:bg-lavender-700 xl:flex-1"
           onClick={onStart}
           type="button"
         >
-          <Play size={17} />
-          {t.form.actions.start}
+          <Play className="shrink-0" size={17} />
+          <span className="min-w-0 whitespace-normal break-words">{t.form.actions.start}</span>
         </button>
         <button
-          className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-lavender-200 bg-white px-4 text-sm font-semibold text-lavender-700 transition hover:bg-lavender-50"
+          className="inline-flex min-h-12 w-full min-w-0 items-center justify-center gap-2 rounded-2xl border border-lavender-200 bg-white px-4 py-3 text-center text-sm font-semibold leading-snug text-lavender-700 transition hover:bg-lavender-50 xl:w-auto"
           onClick={onFillExample}
           type="button"
         >
-          <Sparkles size={17} />
-          {t.form.actions.fill}
+          <Sparkles className="shrink-0" size={17} />
+          <span className="min-w-0 whitespace-normal break-words">{t.form.actions.fill}</span>
         </button>
         <button
-          className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+          className="inline-flex min-h-12 w-full min-w-0 items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-center text-sm font-semibold leading-snug text-slate-600 transition hover:bg-slate-50 xl:w-auto"
           onClick={onClear}
           type="button"
         >
-          <Eraser size={17} />
-          {t.form.actions.clear}
+          <Eraser className="shrink-0" size={17} />
+          <span className="min-w-0 whitespace-normal break-words">{t.form.actions.clear}</span>
         </button>
       </div>
     </div>

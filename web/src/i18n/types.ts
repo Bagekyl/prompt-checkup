@@ -1,4 +1,4 @@
-import type { ReviewDepth } from '../components/PromptForm';
+import type { ReviewDepth, TaskType } from '../components/PromptForm';
 
 export type Language = 'en' | 'ja' | 'zh';
 
@@ -35,7 +35,11 @@ export type Dictionary = {
       options: Array<{ label: string; value: ReviewDepth }>;
     };
     taskDescription: FieldCopy;
-    taskType: FieldCopy;
+    taskType: FieldCopy & {
+      customLabel: string;
+      customPlaceholder: string;
+      options: Array<{ label: string; value: TaskType }>;
+    };
     title: string;
     startQuery: string;
   };
@@ -45,6 +49,9 @@ export type Dictionary = {
   };
   mockControls: {
     clearReport: string;
+    collapse: string;
+    description: string;
+    expand: string;
     label: string;
     showError: string;
     showReport: string;
@@ -57,6 +64,13 @@ export type Dictionary = {
       copyOptimized: string;
       download: string;
     };
+    badges: {
+      error: string;
+      live: string;
+      mock: string;
+      waiting: string;
+    };
+    difyErrorHint: string;
     emptyDescription: string;
     emptyTitle: string;
     errorDescription: string;

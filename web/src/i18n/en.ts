@@ -8,7 +8,7 @@ export const en: Dictionary = {
   form: {
     kicker: 'Prompt checkup form',
     title: 'Describe your prompt task',
-    description: 'This static prototype uses a mock report to preview the future Dify Chatflow experience.',
+    description: 'Fill in the form to call your Dify Chatflow through the local Dify API wrapper and generate a real diagnosis report.',
     prompt: {
       label: 'Prompt to Check',
       placeholder: 'Paste the prompt you want to diagnose and optimize...'
@@ -20,7 +20,20 @@ export const en: Dictionary = {
     },
     taskType: {
       label: 'Task Type',
-      placeholder: 'Example: knowledge-base QA'
+      placeholder: 'Select a task type',
+      customLabel: 'Custom Task Type',
+      customPlaceholder: 'Enter your custom task type',
+      options: [
+        { label: 'General Task', value: 'general' },
+        { label: 'Learning Support', value: 'learning' },
+        { label: 'Writing Polishing', value: 'writing' },
+        { label: 'Content Generation', value: 'content' },
+        { label: 'RAG / Knowledge Base QA', value: 'rag' },
+        { label: 'Coding Assistance', value: 'coding' },
+        { label: 'Data Analysis', value: 'data' },
+        { label: 'Translation / Multilingual', value: 'translation' },
+        { label: 'Custom', value: 'custom' }
+      ]
     },
     context: {
       label: 'Context',
@@ -52,10 +65,17 @@ export const en: Dictionary = {
     title: 'Diagnosis Report',
     emptyTitle: 'Fill the form to start diagnosis',
     emptyDescription: 'Markdown report, scores, risk notes, optimized prompt, and advanced prompt will appear here.',
-    loadingTitle: 'Simulating diagnosis...',
-    loadingDescription: 'Running precheck, task classification, risk review, and report generation.',
-    errorTitle: 'Static error state',
-    errorDescription: 'This is a styled prototype state. No real API is connected yet.',
+    loadingTitle: 'Generating diagnosis...',
+    loadingDescription: 'The local wrapper is calling your Dify Chatflow and waiting for the report.',
+    errorTitle: 'Diagnosis request failed',
+    errorDescription: 'Dify request failed. Please check your API key, model provider configuration, or network connection.',
+    difyErrorHint: 'Dify request failed. Please check your API key, model provider configuration, or network connection.',
+    badges: {
+      mock: 'MOCK REPORT',
+      live: 'LIVE REPORT',
+      error: 'ERROR STATE',
+      waiting: 'WAITING'
+    },
     actions: {
       copyFull: 'Copy full report',
       copyLast: 'Copy last answer',
@@ -80,10 +100,13 @@ export const en: Dictionary = {
     ]
   },
   mockControls: {
-    label: 'Prototype state controls',
-    showReport: 'Show report',
-    showError: 'Error state',
-    clearReport: 'Clear report'
+    label: 'Developer Preview Tools',
+    description: 'Preview mock reports, error state, and report clearing without affecting real diagnosis.',
+    expand: 'Expand',
+    collapse: 'Collapse',
+    showReport: 'Show Mock Report',
+    showError: 'Show Error State',
+    clearReport: 'Clear Report'
   },
   footer: {
     difyTemplate: 'Dify Template · Coming soon',

@@ -8,7 +8,8 @@ export const ja: Dictionary = {
   form: {
     kicker: 'プロンプト診断フォーム',
     title: 'プロンプトのタスクを説明',
-    description: 'この段階では静的プロトタイプとして、mock レポートで Dify Chatflow 体験を再現します。',
+    description:
+      'フォームに入力すると、ローカルの Dify API ラッパー経由であなたの Dify Chatflow を呼び出し、実際の診断レポートを生成します。',
     prompt: {
       label: '診断対象プロンプト',
       placeholder: '診断・改善したいプロンプトを貼り付けてください...'
@@ -20,7 +21,20 @@ export const ja: Dictionary = {
     },
     taskType: {
       label: 'タスクタイプ',
-      placeholder: '例：ナレッジベース QA'
+      placeholder: 'タスクタイプを選択',
+      customLabel: 'カスタムタスクタイプ',
+      customPlaceholder: 'カスタムタスクタイプを入力',
+      options: [
+        { label: '汎用タスク', value: 'general' },
+        { label: '学習支援', value: 'learning' },
+        { label: '文章添削', value: 'writing' },
+        { label: 'コンテンツ生成', value: 'content' },
+        { label: 'RAG / ナレッジベースQA', value: 'rag' },
+        { label: 'コーディング支援', value: 'coding' },
+        { label: 'データ分析', value: 'data' },
+        { label: '翻訳 / 多言語', value: 'translation' },
+        { label: 'カスタム', value: 'custom' }
+      ]
     },
     context: {
       label: '背景情報',
@@ -52,10 +66,17 @@ export const ja: Dictionary = {
     title: '診断レポート',
     emptyTitle: 'フォームを入力して診断を開始',
     emptyDescription: 'Markdown レポート、スコア、リスクメモ、改善版と拡張版プロンプトをここに表示します。',
-    loadingTitle: '診断をシミュレーション中...',
-    loadingDescription: '構造チェック、タスク分類、リスク評価、レポート生成を実行しています。',
-    errorTitle: '静的エラー状態',
-    errorDescription: 'これはスタイル確認用のプロトタイプ状態です。まだ実 API には接続していません。',
+    loadingTitle: '診断レポートを生成中...',
+    loadingDescription: 'ローカルラッパーがあなたの Dify Chatflow を呼び出し、レポートの返却を待っています。',
+    errorTitle: '診断リクエストに失敗しました',
+    errorDescription: 'Dify リクエストに失敗しました。API キー、モデルプロバイダー設定、またはネットワーク状態を確認してください。',
+    difyErrorHint: 'Dify リクエストに失敗しました。API キー、モデルプロバイダー設定、またはネットワーク状態を確認してください。',
+    badges: {
+      mock: 'MOCK REPORT',
+      live: '診断レポート',
+      error: 'エラー状態',
+      waiting: '診断待ち'
+    },
     actions: {
       copyFull: '全文をコピー',
       copyLast: '最後の回答をコピー',
@@ -80,9 +101,12 @@ export const ja: Dictionary = {
     ]
   },
   mockControls: {
-    label: 'プロトタイプ状態',
-    showReport: 'レポート表示',
-    showError: 'エラー状態',
+    label: '開発者プレビューツール',
+    description: 'mock レポート、エラー状態、レポートのクリアを確認するための補助ツールです。',
+    expand: '展開',
+    collapse: '折りたたむ',
+    showReport: 'Show Mock Report',
+    showError: 'エラー状態を表示',
     clearReport: 'レポートをクリア'
   },
   footer: {
@@ -102,10 +126,10 @@ export const ja: Dictionary = {
     downloaded: 'Markdown を保存しました',
     cleared: 'フォームをクリアしました',
     exampleFilled: 'サンプルを入力しました',
-    advancedNotFound: '現在のレポートに拡張版プロンプトのコードブロックが見つかりません。',
+    advancedNotFound: '現在のレポート内にコピー可能な強化版プロンプトが見つかりませんでした。',
     newSession: '新しいセッションを開始しました',
     noReport: 'コピーできるレポートはまだありません',
-    optimizedNotFound: '現在のレポートに改善版プロンプトのコードブロックが見つかりません。',
+    optimizedNotFound: '現在のレポート内にコピー可能な改善版プロンプトが見つかりませんでした。',
     reportCleared: 'レポートをクリアしました'
   }
 };

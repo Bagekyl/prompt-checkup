@@ -8,7 +8,7 @@ export const zh: Dictionary = {
   form: {
     kicker: 'Prompt 体检表单',
     title: '描述你的提示词任务',
-    description: '本阶段是静态原型，会用 mock 报告模拟 Dify Chatflow 的最终体验。',
+    description: '填写表单后，PromptCheckup 会通过本地 Dify API wrapper 调用你的 Dify Chatflow，并生成真实诊断报告。',
     prompt: {
       label: '待评估 Prompt',
       placeholder: '粘贴你想体检和优化的 Prompt...'
@@ -20,7 +20,20 @@ export const zh: Dictionary = {
     },
     taskType: {
       label: '任务类型',
-      placeholder: '例如：知识库问答'
+      placeholder: '选择任务类型',
+      customLabel: '自定义任务类型',
+      customPlaceholder: '填写你的任务类型',
+      options: [
+        { label: '通用任务', value: 'general' },
+        { label: '学习辅导', value: 'learning' },
+        { label: '写作润色', value: 'writing' },
+        { label: '内容生成', value: 'content' },
+        { label: 'RAG / 知识库问答', value: 'rag' },
+        { label: '代码辅助', value: 'coding' },
+        { label: '数据分析', value: 'data' },
+        { label: '翻译 / 多语言', value: 'translation' },
+        { label: '自定义', value: 'custom' }
+      ]
     },
     context: {
       label: '背景信息',
@@ -52,10 +65,17 @@ export const zh: Dictionary = {
     title: '诊断报告',
     emptyTitle: '填写表单后开始诊断',
     emptyDescription: '这里会展示 Markdown 报告、评分、风险提示、优化版 Prompt 和增强版 Prompt。',
-    loadingTitle: '正在模拟诊断...',
-    loadingDescription: '系统正在执行结构预检、任务分类、风险评估和报告生成。',
-    errorTitle: '静态错误状态',
-    errorDescription: '这是本阶段用于验证样式的错误状态，尚未连接真实 API。',
+    loadingTitle: '正在生成诊断...',
+    loadingDescription: '本地 wrapper 正在调用 Dify Chatflow，并等待诊断报告返回。',
+    errorTitle: '诊断请求失败',
+    errorDescription: 'Dify 请求失败。请检查 API Key、模型供应商配置或网络状态。',
+    difyErrorHint: 'Dify 请求失败。请检查 API Key、模型供应商配置或网络状态。',
+    badges: {
+      mock: 'MOCK REPORT',
+      live: '真实报告',
+      error: '错误状态',
+      waiting: '等待诊断'
+    },
     actions: {
       copyFull: '复制全文',
       copyLast: '复制最后回复',
@@ -74,8 +94,11 @@ export const zh: Dictionary = {
     quickActions: ['缩短增强版 Prompt', '改得更严格', '改成英文', '改成日文', '重新诊断当前表单']
   },
   mockControls: {
-    label: '原型状态控制',
-    showReport: '显示报告',
+    label: '开发者预览工具',
+    description: '用于预览 mock 报告、错误状态和清空报告，不影响正式诊断。',
+    expand: '展开',
+    collapse: '收起',
+    showReport: 'Show Mock Report',
     showError: '错误状态',
     clearReport: '清空报告'
   },
@@ -96,10 +119,10 @@ export const zh: Dictionary = {
     downloaded: 'Markdown 已下载',
     cleared: '表单已清空',
     exampleFilled: '示例已填入',
-    advancedNotFound: '当前报告中未找到增强版 Prompt 代码块。',
+    advancedNotFound: '当前报告中未找到可复制的增强版 Prompt。',
     newSession: '已开始新会话',
     noReport: '当前没有可复制的报告',
-    optimizedNotFound: '当前报告中未找到优化版 Prompt 代码块。',
+    optimizedNotFound: '当前报告中未找到可复制的优化版 Prompt。',
     reportCleared: '报告已清空'
   }
 };

@@ -9,6 +9,7 @@ import type { ReportStatus } from './MockControls';
 
 export type ReportContent = {
   advancedPrompt?: string;
+  kind: 'live' | 'mock';
   lastAnswer: string;
   markdown: string;
   messageId?: string;
@@ -35,6 +36,7 @@ const markdownComponents: Components = {
 
 export default function ReportPanel({ errorMessage, report, showToast, status, t }: ReportPanelProps) {
   const markdown = report?.markdown || '';
+  const badgeLabel = getReportBadgeLabel(status, report, t);
   const visibleReport = useProgressiveText(status === 'report' ? markdown : '', {
     chunkSize: 42,
     intervalMs: 16
@@ -90,7 +92,11 @@ export default function ReportPanel({ errorMessage, report, showToast, status, t
       <div className="border-b border-lavender-100 px-5 py-4">
         <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-lavender-500">{t.report.kicker}</p>
+            {badgeLabel ? (
+              <p className="inline-flex rounded-full bg-lavender-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-lavender-600">
+                {badgeLabel}
+              </p>
+            ) : null}
             <h2 className="mt-1 text-2xl font-semibold tracking-tight text-slate-950">{t.report.title}</h2>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -136,6 +142,19 @@ export default function ReportPanel({ errorMessage, report, showToast, status, t
       </div>
     </div>
   );
+}
+
+function getReportBadgeLabel(status: ReportStatus, report: ReportContent | null, t: Dictionary) {
+  if (status === 'empty') {
+    return t.report.badges.waiting;
+  }
+  if (status === 'error') {
+    return t.report.badges.error;
+  }
+  if (status === 'report') {
+    return report?.kind === 'live' ? t.report.badges.live : t.report.badges.mock;
+  }
+  return '';
 }
 
 type ToolButtonProps = {

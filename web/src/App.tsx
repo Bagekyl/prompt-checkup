@@ -6,14 +6,15 @@ import MockControls, { type ReportStatus } from './components/MockControls';
 import PromptForm, { type PromptFormState } from './components/PromptForm';
 import ReportPanel, { type ReportContent } from './components/ReportPanel';
 import { dictionaries, type Language } from './i18n';
-import { sendLocalChatMessage } from './lib/apiClient';
+import { LocalApiError, sendLocalChatMessage } from './lib/apiClient';
 import { extractAdvancedPrompt, extractOptimizedPrompt } from './lib/markdownExtract';
 import { createFollowUpReply, examplePrompt, mockReports } from './lib/mockReport';
 
 const emptyForm: PromptFormState = {
+  customTaskType: '',
   prompt: '',
   taskDescription: '',
-  taskType: '',
+  taskType: 'general',
   context: '',
   outputRequirements: '',
   reviewDepth: 'standard'
@@ -38,7 +39,7 @@ export default function App() {
   };
 
   const showMockReport = () => {
-    setActiveReport(mockReport);
+    setActiveReport({ ...mockReport, kind: 'mock' });
     setErrorMessage('');
     setStatus('loading');
     window.setTimeout(() => setStatus('report'), 900);
@@ -63,7 +64,7 @@ export default function App() {
         inputs: {
           prompt_text: form.prompt,
           task_description: form.taskDescription,
-          task_type: form.taskType,
+          task_type: getTaskTypeLabel(form, t),
           context: form.context,
           output_requirements: form.outputRequirements,
           review_depth: getReviewDepthLabel(form, t)
@@ -76,6 +77,7 @@ export default function App() {
       setLastMessageId(response.message_id);
       setActiveReport({
         advancedPrompt: extractAdvancedPrompt(response.answer),
+        kind: 'live',
         lastAnswer: response.answer,
         markdown: response.answer,
         messageId: response.message_id,
@@ -83,7 +85,7 @@ export default function App() {
       });
       setStatus('report');
     } catch (error) {
-      setErrorMessage(getReadableErrorMessage(error));
+      setErrorMessage(getReadableErrorMessage(error, t));
       setStatus('error');
     }
   };
@@ -187,10 +189,29 @@ function getReviewDepthLabel(form: PromptFormState, t: (typeof dictionaries)['zh
   return t.form.reviewDepth.options.find((option) => option.value === form.reviewDepth)?.label || form.reviewDepth;
 }
 
-function getReadableErrorMessage(error: unknown) {
-  if (error instanceof Error && error.message) {
-    return error.message;
+function getTaskTypeLabel(form: PromptFormState, t: (typeof dictionaries)['zh']) {
+  if (form.taskType === 'custom') {
+    return form.customTaskType.trim() || t.form.taskType.options.find((option) => option.value === 'custom')?.label || '';
   }
 
-  return 'Network error';
+  return t.form.taskType.options.find((option) => option.value === form.taskType)?.label || form.taskType;
+}
+
+function getReadableErrorMessage(error: unknown, t: (typeof dictionaries)['zh']) {
+  if (error instanceof LocalApiError) {
+    const parts = [error.message || 'Local chat request failed'];
+    if (error.status) {
+      parts.push(`Status: ${error.status}`);
+    }
+    if (!/DIFY_API_KEY is not configured/i.test(error.message)) {
+      parts.push(t.report.difyErrorHint);
+    }
+    return parts.join(' ');
+  }
+
+  if (error instanceof Error && error.message) {
+    return `${error.message} ${t.report.difyErrorHint}`;
+  }
+
+  return `Network error. ${t.report.difyErrorHint}`;
 }

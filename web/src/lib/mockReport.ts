@@ -10,28 +10,31 @@ export type MockReport = {
 
 export const examplePrompt: Record<Language, PromptFormState> = {
   zh: {
+    customTaskType: '',
     prompt:
       '你是一个知识库问答助手。请根据给定知识库回答用户问题，必须给出引用。如果没有相关资料，也要根据经验推测一个答案。',
     taskDescription: '企业知识库问答 Prompt 诊断',
-    taskType: 'RAG / 知识库问答',
+    taskType: 'rag',
     context: '用于内部政策、报销和合规问题。希望减少幻觉和伪造引用风险。',
     outputRequirements: '输出 Markdown 报告，包含评分、风险、优化版 Prompt 和增强版 Prompt。',
     reviewDepth: 'strict'
   },
   en: {
+    customTaskType: 'Product analytics',
     prompt:
       'You are a product analyst. Analyze customer feedback and summarize product issues, sentiment, evidence quotes, and recommended actions.',
     taskDescription: 'Product feedback analysis prompt review',
-    taskType: 'Product analytics',
+    taskType: 'custom',
     context: 'Used by a product team to review qualitative feedback from support tickets and surveys.',
     outputRequirements: 'Return a Markdown report with score, risks, optimized prompt, and advanced prompt.',
     reviewDepth: 'standard'
   },
   ja: {
+    customTaskType: '',
     prompt:
       'あなたは日本語作文の添削先生です。次の文章を自然な日本語に直し、主な修正点と次に注意すべきポイントを説明してください。',
     taskDescription: '日本語作文添削プロンプトの診断',
-    taskType: 'Writing correction',
+    taskType: 'writing',
     context: '日本語学習者向け。学習者の意図を変えず、自然な表現に改善したい。',
     outputRequirements: 'Markdown レポート、スコア、改善版、拡張版プロンプトを出力。',
     reviewDepth: 'standard'
