@@ -2,7 +2,8 @@
 
 A multilingual prompt diagnosis and optimization workflow built with Dify Chatflow.
 
-PromptCheckup 是一个基于 Dify Chatflow 的多语言 Prompt 体检工具，支持结构预检、意图分流、任务分类、结构化诊断、风险评分、Prompt 优化、多轮追问调整和修改表单后的重新诊断。
+PromptCheckup 是一个基于 Dify Chatflow 的多语言 Prompt 体检工具，支持结构预检、意图分流、任务分类、结构化诊断、风险评分、
+Prompt 优化、多轮追问调整和修改表单后的重新诊断。
 
 中文名：Prompt 体检医生
 
@@ -46,7 +47,8 @@ User Input
 3. 在 Dify 中配置自己的模型供应商和 API Key。
 4. 运行示例测试用例，确认中文、英文、日文和追问调整分支表现正常。
 
-不要把任何 API Key、Dify App Key 或模型供应商密钥提交到 GitHub。真实配置请放在本地 `.env` 或 Dify 控制台中。
+不要把任何 API Key、Dify App Key 或模型供应商密钥提交到 GitHub。
+真实配置请放在本地 `.env` 或 Dify 控制台中。
 
 ## Import into Dify
 
@@ -56,7 +58,8 @@ User Input
 dify/prompt-checkup.yml
 ```
 
-导入后需要自行检查并配置模型供应商，例如 Gemini、OpenAI 或其他 Dify 支持的模型提供方。导出的 Flow 不包含可公开使用的真实密钥。
+导入后需要自行检查并配置模型供应商，例如 Gemini、OpenAI 或其他 Dify 支持的模型提供方。
+导出的 Flow 不包含可公开使用的真实密钥。
 
 ## Test Cases
 
@@ -76,7 +79,8 @@ dify/prompt-checkup.yml
 - v0.2.0: Web UI + Local Wrapper
 - v0.3.0: Expanded Multilingual Support
 
-当前版本不包含 Web UI。本地浏览器交互界面和本地 Dify API wrapper 计划在 v0.2 中实现。更多正式支持语言计划在 v0.3 中扩展。
+当前版本不包含 Web UI。本地浏览器交互界面和本地 Dify API wrapper 计划在 v0.2 中实现。
+更多正式支持语言计划在 v0.3 中扩展。
 
 ## Safety Notes
 

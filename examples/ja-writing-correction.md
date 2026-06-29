@@ -27,4 +27,7 @@
 
 ## Expected behavior
 
-This should enter the full diagnosis branch and return a Japanese report. Expected score is around 70-85, with low or medium risk. The diagnosis should mention missing details such as learner level, correction strictness, explanation depth, and examples.
+This should enter the full diagnosis branch and return a Japanese report.
+Expected score is around 70-85, with low or medium risk.
+The diagnosis should mention missing details such as learner level, correction strictness,
+explanation depth, and examples.

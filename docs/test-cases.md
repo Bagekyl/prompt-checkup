@@ -1,6 +1,7 @@
 # Test Cases
 
-These test cases describe the expected behavior for v0.1. Example inputs are stored in `examples/`.
+These test cases describe the expected behavior for v0.1.
+Example inputs are stored in `examples/`.
 
 ## 1. Chinese RAG high-risk test
 
@@ -43,7 +44,8 @@ risk low / medium
 Key points:
 
 - The workflow should not misclassify a Japanese natural-language role prompt.
-- It should identify issues around output format, learner level, correction policy, and explanation depth.
+- It should identify issues around output format, learner level, correction policy,
+  and explanation depth.
 - The final report and rewritten prompt should remain in Japanese unless the user requests otherwise.
 
 ## 3. English product feedback prompt test
@@ -100,7 +102,8 @@ asks user to submit a real prompt
 
 ## 6. Follow-up adjustment test
 
-Goal: verify that a second-turn request to compress or rewrite the previous enhanced prompt enters the follow-up adjustment branch instead of re-diagnosis.
+Goal: verify that a second-turn request to compress or rewrite the previous enhanced prompt
+enters the follow-up adjustment branch instead of re-diagnosis.
 
 Example file: `examples/follow-up-tests.md`
 
@@ -115,7 +118,8 @@ returns modified previous optimized/enhanced prompt
 
 ## 7. Changed form re-diagnosis test
 
-Goal: verify that when the user changes form fields and says "我改了表单，请按新的表单重新诊断", the workflow enters the full diagnosis flow again.
+Goal: verify that when the user changes form fields and says "我改了表单，请按新的表单重新诊断",
+the workflow enters the full diagnosis flow again.
 
 Example file: `examples/follow-up-tests.md`
 

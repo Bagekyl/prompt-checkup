@@ -9,7 +9,9 @@
 ## Prompt under test
 
 ```text
-You are a product analyst. Analyze the following customer feedback and summarize the top product issues, emotional tone, and suggested next actions.
+You are a product analyst.
+Analyze the following customer feedback and summarize the top product issues,
+emotional tone, and suggested next actions.
 
 Input:
 {{customer_feedback}}
@@ -29,4 +31,6 @@ Rules:
 
 ## Expected behavior
 
-This should enter the full diagnosis branch and produce an English report. The risk should be low or medium, with improvement suggestions around clearer category definitions, prioritization, and evidence handling.
+This should enter the full diagnosis branch and produce an English report.
+The risk should be low or medium, with improvement suggestions around clearer category definitions,
+prioritization, and evidence handling.
