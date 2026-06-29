@@ -69,7 +69,10 @@ export default function ReportPanel({ report, showToast, status, t }: ReportPane
         {status === 'loading' ? <LoadingState t={t} /> : null}
         {status === 'error' ? <ErrorState t={t} /> : null}
         {status === 'report' ? (
-          <article className="prose prose-slate max-w-none prose-headings:tracking-tight prose-h1:text-3xl prose-h2:text-xl prose-pre:border prose-pre:border-lavender-100 prose-pre:bg-slate-950 prose-code:text-lavender-700 prose-pre:shadow-inner prose-table:overflow-hidden prose-th:bg-lavender-50 prose-th:text-slate-700 prose-td:border-lavender-100 prose-th:border-lavender-100">
+          <article
+            aria-live="polite"
+            className="report-stream prose prose-slate max-w-none prose-headings:tracking-tight prose-h1:text-3xl prose-h2:text-xl prose-pre:border prose-pre:border-lavender-100 prose-pre:bg-slate-950 prose-code:text-lavender-700 prose-pre:shadow-inner prose-table:overflow-hidden prose-th:bg-lavender-50 prose-th:text-slate-700 prose-td:border-lavender-100 prose-th:border-lavender-100"
+          >
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{visibleReport}</ReactMarkdown>
           </article>
         ) : null}

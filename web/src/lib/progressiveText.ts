@@ -15,6 +15,12 @@ export function useProgressiveText(text: string, options: ProgressiveOptions = {
       return;
     }
 
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      setVisibleText(text);
+      return;
+    }
+
     let index = 0;
     const timer = window.setInterval(() => {
       index = Math.min(index + chunkSize, text.length);
