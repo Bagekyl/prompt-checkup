@@ -72,7 +72,7 @@ export const ja: Dictionary = {
     errorDescription: 'Dify リクエストに失敗しました。API キー、モデルプロバイダー設定、またはネットワーク状態を確認してください。',
     difyErrorHint: 'Dify リクエストに失敗しました。API キー、モデルプロバイダー設定、またはネットワーク状態を確認してください。',
     badges: {
-      mock: 'MOCK REPORT',
+      mock: 'モックレポート',
       live: '診断レポート',
       error: 'エラー状態',
       waiting: '診断待ち'
@@ -105,8 +105,8 @@ export const ja: Dictionary = {
     description: 'mock レポート、エラー状態、レポートのクリアを確認するための補助ツールです。',
     expand: '展開',
     collapse: '折りたたむ',
-    showReport: 'Show Mock Report',
-    showError: 'エラー状態を表示',
+    showReport: 'モックレポートを表示',
+    showError: 'エラー状態',
     clearReport: 'レポートをクリア'
   },
   footer: {

@@ -44,12 +44,15 @@ function extractCodeBlockAfterHeading(markdown: string, headings: string[]) {
     return '';
   }
 
-  const codeBlock = section.content.match(/```[^\n]*\n([\s\S]*?)\n```/);
-  if (codeBlock?.[1]?.trim()) {
-    return codeBlock[1].trim();
+  for (const codeBlock of extractFencedCodeBlocks(section.content)) {
+    const cleaned = cleanupPromptText(codeBlock);
+    if (isValidPromptBlock(cleaned)) {
+      return cleaned;
+    }
   }
 
-  return cleanupSectionText(section.content);
+  const fallback = cleanupPromptText(section.content);
+  return isValidPromptBlock(fallback) ? fallback : '';
 }
 
 function findSection(markdown: string, headings: string[]) {
@@ -64,12 +67,36 @@ function findSection(markdown: string, headings: string[]) {
 
     const contentStart = index + 1;
     let contentEnd = lines.length;
+    let fence = '';
+    let hasBodyContent = false;
 
     for (let next = contentStart; next < lines.length; next += 1) {
+      const fenceMatch = lines[next].match(/^\s*(`{3,}|~{3,})[^\n]*$/);
+      if (fenceMatch) {
+        if (!fence) {
+          fence = fenceMatch[1];
+          continue;
+        }
+        if (fenceMatch[1][0] === fence[0] && fenceMatch[1].length >= fence.length) {
+          fence = '';
+          continue;
+        }
+      }
+
+      if (fence) {
+        continue;
+      }
+
       const nextHeading = parseHeadingLine(lines[next]);
-      if (nextHeading && nextHeading.level <= heading.level) {
+      const isSameLevelBoundary = nextHeading && nextHeading.level === heading.level;
+      const isHigherBoundaryAfterBody = nextHeading && nextHeading.level < heading.level && hasBodyContent;
+      if (isSameLevelBoundary || isHigherBoundaryAfterBody) {
         contentEnd = next;
         break;
+      }
+
+      if (lines[next].trim()) {
+        hasBodyContent = true;
       }
     }
 
@@ -120,4 +147,97 @@ function cleanupSectionText(value: string) {
     .replace(/^\s*---+\s*$/gm, '')
     .replace(/^\s*> ?/gm, '')
     .trim();
+}
+
+function extractFencedCodeBlocks(value: string) {
+  const lines = value.split(/\r?\n/);
+  const blocks: string[] = [];
+  let blockStart = -1;
+  let fenceChar = '';
+  let fenceLength = 0;
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
+
+    if (blockStart === -1) {
+      const opening = line.match(/^\s*(`{3,}|~{3,})[^\n]*$/);
+      if (opening) {
+        blockStart = index + 1;
+        fenceChar = opening[1][0];
+        fenceLength = opening[1].length;
+      }
+      continue;
+    }
+
+    const closingPattern = new RegExp(String.raw`^\s*${escapeRegExp(fenceChar.repeat(fenceLength))}\s*$`);
+    if (closingPattern.test(line)) {
+      blocks.push(lines.slice(blockStart, index).join('\n'));
+      blockStart = -1;
+      fenceChar = '';
+      fenceLength = 0;
+    }
+  }
+
+  return blocks;
+}
+
+function cleanupPromptText(value: string) {
+  let result = cleanupSectionText(value);
+
+  for (let pass = 0; pass < 4; pass += 1) {
+    const unwrapped = unwrapOuterFence(result);
+    if (unwrapped === result) {
+      break;
+    }
+    result = cleanupSectionText(unwrapped);
+  }
+
+  return result
+    .replace(/^\s*(?:markdown|md|text)\s*$/gim, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function unwrapOuterFence(value: string) {
+  const lines = value.trim().split(/\r?\n/);
+  if (lines.length < 2) {
+    return value.trim();
+  }
+
+  const opening = lines[0].match(/^\s*(`{3,}|~{3,})(?:\s*(?:markdown|md|text))?\s*$/i);
+  if (!opening) {
+    return value.trim();
+  }
+
+  const closing = lines[lines.length - 1].trim();
+  if (closing !== opening[1]) {
+    return value.trim();
+  }
+
+  return lines.slice(1, -1).join('\n').trim();
+}
+
+function isValidPromptBlock(value: string) {
+  const normalized = value.trim().toLowerCase();
+  if (!normalized) {
+    return false;
+  }
+
+  if (['markdown', 'md', 'text'].includes(normalized)) {
+    return false;
+  }
+
+  if (/^`{3,}\s*(?:markdown|md|text)?\s*`{3,}$/i.test(normalized)) {
+    return false;
+  }
+
+  if (/^(?:`{3,}|~{3,})\s*(?:markdown|md|text)?$/i.test(normalized)) {
+    return false;
+  }
+
+  return true;
+}
+
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

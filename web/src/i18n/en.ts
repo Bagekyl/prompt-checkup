@@ -105,7 +105,7 @@ export const en: Dictionary = {
     expand: 'Expand',
     collapse: 'Collapse',
     showReport: 'Show Mock Report',
-    showError: 'Show Error State',
+    showError: 'Error State',
     clearReport: 'Clear Report'
   },
   footer: {

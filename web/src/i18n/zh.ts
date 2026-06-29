@@ -71,7 +71,7 @@ export const zh: Dictionary = {
     errorDescription: 'Dify 请求失败。请检查 API Key、模型供应商配置或网络状态。',
     difyErrorHint: 'Dify 请求失败。请检查 API Key、模型供应商配置或网络状态。',
     badges: {
-      mock: 'MOCK REPORT',
+      mock: '模拟报告',
       live: '真实报告',
       error: '错误状态',
       waiting: '等待诊断'
@@ -98,7 +98,7 @@ export const zh: Dictionary = {
     description: '用于预览 mock 报告、错误状态和清空报告，不影响正式诊断。',
     expand: '展开',
     collapse: '收起',
-    showReport: 'Show Mock Report',
+    showReport: '显示模拟报告',
     showError: '错误状态',
     clearReport: '清空报告'
   },
