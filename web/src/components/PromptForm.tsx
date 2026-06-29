@@ -1,0 +1,157 @@
+import { ClipboardPenLine, Eraser, Play, Sparkles } from 'lucide-react';
+import type { Dictionary, Language } from '../i18n';
+
+export type ReviewDepth = 'quick' | 'standard' | 'deep' | 'optimizedOnly' | 'strict';
+
+export type PromptFormState = {
+  prompt: string;
+  taskDescription: string;
+  taskType: string;
+  context: string;
+  outputRequirements: string;
+  reviewDepth: ReviewDepth;
+};
+
+type PromptFormProps = {
+  form: PromptFormState;
+  language: Language;
+  onChange: (form: PromptFormState) => void;
+  onClear: () => void;
+  onFillExample: () => void;
+  onStart: () => void;
+  t: Dictionary;
+};
+
+const fieldClasses =
+  'w-full rounded-2xl border border-lavender-100 bg-white/90 px-4 py-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-lavender-300 focus:ring-4 focus:ring-lavender-100';
+
+export default function PromptForm({ form, onChange, onClear, onFillExample, onStart, t }: PromptFormProps) {
+  const update = <K extends keyof PromptFormState>(key: K, value: PromptFormState[K]) =>
+    onChange({ ...form, [key]: value });
+
+  return (
+    <div className="rounded-[28px] border border-white/70 bg-white/80 p-5 shadow-soft backdrop-blur-xl">
+      <div className="mb-5 flex items-start justify-between gap-4">
+        <div>
+          <p className="inline-flex items-center gap-2 rounded-full bg-lavender-100 px-3 py-1 text-xs font-semibold text-lavender-700">
+            <ClipboardPenLine size={14} />
+            {t.form.kicker}
+          </p>
+          <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950">{t.form.title}</h2>
+          <p className="mt-1 text-sm leading-6 text-slate-500">{t.form.description}</p>
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <label className="block">
+          <span className="mb-2 block text-sm font-semibold text-slate-800">{t.form.prompt.label}</span>
+          <textarea
+            className={`${fieldClasses} min-h-[180px] resize-y`}
+            onChange={(event) => update('prompt', event.target.value)}
+            placeholder={t.form.prompt.placeholder}
+            value={form.prompt}
+          />
+        </label>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <TextField
+            label={t.form.taskDescription.label}
+            onChange={(value) => update('taskDescription', value)}
+            placeholder={t.form.taskDescription.placeholder}
+            value={form.taskDescription}
+          />
+          <TextField
+            label={t.form.taskType.label}
+            onChange={(value) => update('taskType', value)}
+            placeholder={t.form.taskType.placeholder}
+            value={form.taskType}
+          />
+        </div>
+
+        <label className="block">
+          <span className="mb-2 block text-sm font-semibold text-slate-800">{t.form.context.label}</span>
+          <textarea
+            className={`${fieldClasses} min-h-[96px] resize-y`}
+            onChange={(event) => update('context', event.target.value)}
+            placeholder={t.form.context.placeholder}
+            value={form.context}
+          />
+        </label>
+
+        <label className="block">
+          <span className="mb-2 block text-sm font-semibold text-slate-800">{t.form.outputRequirements.label}</span>
+          <textarea
+            className={`${fieldClasses} min-h-[96px] resize-y`}
+            onChange={(event) => update('outputRequirements', event.target.value)}
+            placeholder={t.form.outputRequirements.placeholder}
+            value={form.outputRequirements}
+          />
+        </label>
+
+        <label className="block">
+          <span className="mb-2 block text-sm font-semibold text-slate-800">{t.form.reviewDepth.label}</span>
+          <select
+            className={fieldClasses}
+            onChange={(event) => update('reviewDepth', event.target.value as ReviewDepth)}
+            value={form.reviewDepth}
+          >
+            {t.form.reviewDepth.options.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      <div className="mt-5 grid gap-3 sm:grid-cols-[1fr_auto_auto]">
+        <button
+          className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-lavender-600 px-5 text-sm font-semibold text-white shadow-lg shadow-lavender-300/30 transition hover:bg-lavender-700"
+          onClick={onStart}
+          type="button"
+        >
+          <Play size={17} />
+          {t.form.actions.start}
+        </button>
+        <button
+          className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-lavender-200 bg-white px-4 text-sm font-semibold text-lavender-700 transition hover:bg-lavender-50"
+          onClick={onFillExample}
+          type="button"
+        >
+          <Sparkles size={17} />
+          {t.form.actions.fill}
+        </button>
+        <button
+          className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+          onClick={onClear}
+          type="button"
+        >
+          <Eraser size={17} />
+          {t.form.actions.clear}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+type TextFieldProps = {
+  label: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+  value: string;
+};
+
+function TextField({ label, onChange, placeholder, value }: TextFieldProps) {
+  return (
+    <label className="block">
+      <span className="mb-2 block text-sm font-semibold text-slate-800">{label}</span>
+      <input
+        className={fieldClasses}
+        onChange={(event) => onChange(event.target.value)}
+        placeholder={placeholder}
+        type="text"
+        value={value}
+      />
+    </label>
+  );
+}
