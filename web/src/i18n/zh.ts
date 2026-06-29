@@ -13,6 +13,7 @@ export const zh: Dictionary = {
       label: '待评估 Prompt',
       placeholder: '粘贴你想体检和优化的 Prompt...'
     },
+    promptRequired: '请先填写待评估 Prompt。',
     taskDescription: {
       label: '任务描述',
       placeholder: '例如：RAG 问答、产品反馈分析、写作批改'
@@ -43,7 +44,8 @@ export const zh: Dictionary = {
       start: '开始诊断',
       clear: '清空表单',
       fill: '填入示例'
-    }
+    },
+    startQuery: '开始诊断'
   },
   report: {
     kicker: 'Mock report',
@@ -66,6 +68,8 @@ export const zh: Dictionary = {
     title: '追问调整',
     description: '模拟对上一轮增强版 Prompt 的压缩、改写或重新诊断请求。',
     placeholder: '例如：把增强版压缩到 300 字以内',
+    conversation: '当前会话',
+    newSession: '新会话',
     send: '发送',
     quickActions: ['缩短增强版 Prompt', '改得更严格', '改成英文', '改成日文', '重新诊断当前表单']
   },
@@ -92,6 +96,10 @@ export const zh: Dictionary = {
     downloaded: 'Markdown 已下载',
     cleared: '表单已清空',
     exampleFilled: '示例已填入',
+    advancedNotFound: '当前报告中未找到增强版 Prompt 代码块。',
+    newSession: '已开始新会话',
+    noReport: '当前没有可复制的报告',
+    optimizedNotFound: '当前报告中未找到优化版 Prompt 代码块。',
     reportCleared: '报告已清空'
   }
 };

@@ -4,12 +4,20 @@ import ReactMarkdown from 'react-markdown';
 import type { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import type { Dictionary } from '../i18n';
-import type { MockReport } from '../lib/mockReport';
 import { useProgressiveText } from '../lib/progressiveText';
 import type { ReportStatus } from './MockControls';
 
+export type ReportContent = {
+  advancedPrompt?: string;
+  lastAnswer: string;
+  markdown: string;
+  messageId?: string;
+  optimizedPrompt?: string;
+};
+
 type ReportPanelProps = {
-  report: MockReport;
+  errorMessage?: string;
+  report: ReportContent | null;
   showToast: (message: string) => void;
   status: ReportStatus;
   t: Dictionary;
@@ -25,8 +33,9 @@ const markdownComponents: Components = {
   }
 };
 
-export default function ReportPanel({ report, showToast, status, t }: ReportPanelProps) {
-  const visibleReport = useProgressiveText(status === 'report' ? report.markdown : '', {
+export default function ReportPanel({ errorMessage, report, showToast, status, t }: ReportPanelProps) {
+  const markdown = report?.markdown || '';
+  const visibleReport = useProgressiveText(status === 'report' ? markdown : '', {
     chunkSize: 42,
     intervalMs: 16
   });
@@ -37,14 +46,43 @@ export default function ReportPanel({ report, showToast, status, t }: ReportPane
   };
 
   const downloadMarkdown = () => {
+    if (!report) {
+      showToast(t.toast.noReport);
+      return;
+    }
+
     const blob = new Blob([report.markdown], { type: 'text/markdown;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement('a');
     anchor.href = url;
-    anchor.download = 'prompt-checkup-mock-report.md';
+    anchor.download = 'prompt-checkup-report.md';
     anchor.click();
     URL.revokeObjectURL(url);
     showToast(t.toast.downloaded);
+  };
+
+  const copyReport = () => {
+    if (!report) {
+      showToast(t.toast.noReport);
+      return;
+    }
+    void copyText(report.markdown, t.toast.copied);
+  };
+
+  const copyLastAnswer = () => {
+    if (!report) {
+      showToast(t.toast.noReport);
+      return;
+    }
+    void copyText(report.lastAnswer, t.toast.copied);
+  };
+
+  const copyOptionalPrompt = (value: string | undefined, fallbackMessage: string) => {
+    if (!value) {
+      showToast(fallbackMessage);
+      return;
+    }
+    void copyText(value, t.toast.copied);
   };
 
   return (
@@ -56,16 +94,22 @@ export default function ReportPanel({ report, showToast, status, t }: ReportPane
             <h2 className="mt-1 text-2xl font-semibold tracking-tight text-slate-950">{t.report.title}</h2>
           </div>
           <div className="flex flex-wrap gap-2">
-            <ToolButton icon={<Clipboard size={15} />} onClick={() => copyText(report.markdown, t.toast.copied)}>
+            <ToolButton icon={<Clipboard size={15} />} onClick={copyReport}>
               {t.report.actions.copyFull}
             </ToolButton>
-            <ToolButton icon={<ClipboardCheck size={15} />} onClick={() => copyText(report.lastAnswer, t.toast.copied)}>
+            <ToolButton icon={<ClipboardCheck size={15} />} onClick={copyLastAnswer}>
               {t.report.actions.copyLast}
             </ToolButton>
-            <ToolButton icon={<Wand2 size={15} />} onClick={() => copyText(report.optimizedPrompt, t.toast.copied)}>
+            <ToolButton
+              icon={<Wand2 size={15} />}
+              onClick={() => copyOptionalPrompt(report?.optimizedPrompt, t.toast.optimizedNotFound)}
+            >
               {t.report.actions.copyOptimized}
             </ToolButton>
-            <ToolButton icon={<Code2 size={15} />} onClick={() => copyText(report.advancedPrompt, t.toast.copied)}>
+            <ToolButton
+              icon={<Code2 size={15} />}
+              onClick={() => copyOptionalPrompt(report?.advancedPrompt, t.toast.advancedNotFound)}
+            >
               {t.report.actions.copyAdvanced}
             </ToolButton>
             <ToolButton icon={<Download size={15} />} onClick={downloadMarkdown}>
@@ -78,7 +122,7 @@ export default function ReportPanel({ report, showToast, status, t }: ReportPane
       <div className="min-h-[560px] p-5">
         {status === 'empty' ? <EmptyState t={t} /> : null}
         {status === 'loading' ? <LoadingState t={t} /> : null}
-        {status === 'error' ? <ErrorState t={t} /> : null}
+        {status === 'error' ? <ErrorState message={errorMessage} t={t} /> : null}
         {status === 'report' ? (
           <article
             aria-live="polite"
@@ -150,11 +194,11 @@ function LoadingState({ t }: { t: Dictionary }) {
   );
 }
 
-function ErrorState({ t }: { t: Dictionary }) {
+function ErrorState({ message, t }: { message?: string; t: Dictionary }) {
   return (
     <div className="rounded-3xl border border-rose-100 bg-rose-50 p-6">
       <p className="text-sm font-semibold text-rose-700">{t.report.errorTitle}</p>
-      <p className="mt-2 text-sm leading-6 text-rose-600">{t.report.errorDescription}</p>
+      <p className="mt-2 text-sm leading-6 text-rose-600">{message || t.report.errorDescription}</p>
     </div>
   );
 }

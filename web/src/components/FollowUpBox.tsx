@@ -9,12 +9,14 @@ export type FollowUpMessage = {
 };
 
 type FollowUpBoxProps = {
+  conversationId?: string;
   messages: FollowUpMessage[];
+  onNewSession: () => void;
   onSend: (content: string) => void;
   t: Dictionary;
 };
 
-export default function FollowUpBox({ messages, onSend, t }: FollowUpBoxProps) {
+export default function FollowUpBox({ conversationId, messages, onNewSession, onSend, t }: FollowUpBoxProps) {
   const [value, setValue] = useState('');
 
   const send = (content = value) => {
@@ -29,8 +31,24 @@ export default function FollowUpBox({ messages, onSend, t }: FollowUpBoxProps) {
   return (
     <div className="rounded-[28px] border border-white/70 bg-white/85 p-5 shadow-soft backdrop-blur-xl">
       <div className="flex flex-col gap-1">
-        <h2 className="text-lg font-semibold text-slate-950">{t.followUp.title}</h2>
-        <p className="text-sm leading-6 text-slate-500">{t.followUp.description}</p>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h2 className="text-lg font-semibold text-slate-950">{t.followUp.title}</h2>
+            <p className="text-sm leading-6 text-slate-500">{t.followUp.description}</p>
+          </div>
+          <button
+            className="inline-flex h-9 shrink-0 items-center justify-center rounded-full border border-lavender-200 bg-white px-3 text-xs font-semibold text-lavender-700 transition hover:bg-lavender-50"
+            onClick={onNewSession}
+            type="button"
+          >
+            {t.followUp.newSession}
+          </button>
+        </div>
+        {conversationId ? (
+          <p className="mt-2 max-w-full truncate rounded-full bg-lavender-50 px-3 py-1 text-xs font-medium text-lavender-700">
+            {t.followUp.conversation}: {conversationId}
+          </p>
+        ) : null}
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">

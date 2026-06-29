@@ -10,7 +10,9 @@ export type Dictionary = {
     roadmap: string;
   };
   followUp: {
+    conversation: string;
     description: string;
+    newSession: string;
     placeholder: string;
     quickActions: string[];
     send: string;
@@ -27,6 +29,7 @@ export type Dictionary = {
     kicker: string;
     outputRequirements: FieldCopy;
     prompt: FieldCopy;
+    promptRequired: string;
     reviewDepth: {
       label: string;
       options: Array<{ label: string; value: ReviewDepth }>;
@@ -34,6 +37,7 @@ export type Dictionary = {
     taskDescription: FieldCopy;
     taskType: FieldCopy;
     title: string;
+    startQuery: string;
   };
   header: {
     language: string;
@@ -63,10 +67,14 @@ export type Dictionary = {
     title: string;
   };
   toast: {
+    advancedNotFound: string;
     cleared: string;
     copied: string;
     downloaded: string;
     exampleFilled: string;
+    newSession: string;
+    noReport: string;
+    optimizedNotFound: string;
     reportCleared: string;
   };
 };

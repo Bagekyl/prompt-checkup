@@ -13,6 +13,7 @@ export const en: Dictionary = {
       label: 'Prompt to Check',
       placeholder: 'Paste the prompt you want to diagnose and optimize...'
     },
+    promptRequired: 'Please enter a prompt to check first.',
     taskDescription: {
       label: 'Task Description',
       placeholder: 'Example: RAG QA, product feedback analysis, writing correction'
@@ -43,7 +44,8 @@ export const en: Dictionary = {
       start: 'Start Diagnosis',
       clear: 'Clear Form',
       fill: 'Fill Example'
-    }
+    },
+    startQuery: '开始诊断'
   },
   report: {
     kicker: 'Mock report',
@@ -66,6 +68,8 @@ export const en: Dictionary = {
     title: 'Follow-up Adjustment',
     description: 'Mock a second-turn request to compress, rewrite, or re-diagnose the previous result.',
     placeholder: 'Example: compress the advanced prompt to 300 words',
+    conversation: 'Current session',
+    newSession: 'New Session',
     send: 'Send',
     quickActions: [
       'Shorten the advanced prompt',
@@ -98,6 +102,10 @@ export const en: Dictionary = {
     downloaded: 'Markdown downloaded',
     cleared: 'Form cleared',
     exampleFilled: 'Example filled',
+    advancedNotFound: 'Could not find an advanced prompt block in the current report.',
+    newSession: 'New session started',
+    noReport: 'There is no report to copy yet',
+    optimizedNotFound: 'Could not find an optimized prompt block in the current report.',
     reportCleared: 'Report cleared'
   }
 };

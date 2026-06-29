@@ -13,6 +13,7 @@ export const ja: Dictionary = {
       label: '診断対象プロンプト',
       placeholder: '診断・改善したいプロンプトを貼り付けてください...'
     },
+    promptRequired: '先に診断対象プロンプトを入力してください。',
     taskDescription: {
       label: 'タスク説明',
       placeholder: '例：RAG QA、商品フィードバック分析、作文添削'
@@ -43,7 +44,8 @@ export const ja: Dictionary = {
       start: '診断を開始',
       clear: 'フォームをクリア',
       fill: 'サンプルを入力'
-    }
+    },
+    startQuery: '开始诊断'
   },
   report: {
     kicker: 'Mock report',
@@ -66,6 +68,8 @@ export const ja: Dictionary = {
     title: '追加調整',
     description: '前回の拡張版プロンプトを短縮、書き換え、再診断する mock 入力です。',
     placeholder: '例：拡張版プロンプトを 300 字以内に短縮',
+    conversation: '現在のセッション',
+    newSession: '新しいセッション',
     send: '送信',
     quickActions: [
       '拡張版プロンプトを短くする',
@@ -98,6 +102,10 @@ export const ja: Dictionary = {
     downloaded: 'Markdown を保存しました',
     cleared: 'フォームをクリアしました',
     exampleFilled: 'サンプルを入力しました',
+    advancedNotFound: '現在のレポートに拡張版プロンプトのコードブロックが見つかりません。',
+    newSession: '新しいセッションを開始しました',
+    noReport: 'コピーできるレポートはまだありません',
+    optimizedNotFound: '現在のレポートに改善版プロンプトのコードブロックが見つかりません。',
     reportCleared: 'レポートをクリアしました'
   }
 };
