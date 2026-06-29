@@ -1,0 +1,14 @@
+{
+  "name": "prompt-checkup",
+  "version": "0.2.0-alpha.0",
+  "private": true,
+  "description": "PromptCheckup local Web UI prototype.",
+  "scripts": {
+    "dev": "npm run dev --workspace web",
+    "build": "npm run build --workspace web",
+    "preview": "npm run preview --workspace web"
+  },
+  "workspaces": [
+    "web"
+  ]
+}
