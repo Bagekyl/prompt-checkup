@@ -16,7 +16,7 @@ Then fill in your own Dify App API key:
 
 ```env
 DIFY_API_BASE_URL=https://api.dify.ai/v1
-DIFY_API_KEY=your_real_dify_app_api_key
+DIFY_API_KEY=your_dify_app_api_key_here
 DIFY_USER=local-user
 SERVER_PORT=8787
 ```
