@@ -1,4 +1,4 @@
-import { Clipboard, ClipboardCheck, Code2, Download, FileText, Wand2 } from 'lucide-react';
+import { Clipboard, ClipboardCheck, Download, FileText } from 'lucide-react';
 import type { ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
 import type { Components } from 'react-markdown';
@@ -8,12 +8,10 @@ import { useProgressiveText } from '../lib/progressiveText';
 import type { ReportStatus } from './MockControls';
 
 export type ReportContent = {
-  advancedPrompt?: string;
   kind: 'live' | 'mock';
   lastAnswer: string;
   markdown: string;
   messageId?: string;
-  optimizedPrompt?: string;
 };
 
 type ReportPanelProps = {
@@ -81,14 +79,6 @@ export default function ReportPanel({ errorMessage, latestAssistantAnswer, repor
     void copyText(answer, t.toast.copied);
   };
 
-  const copyOptionalPrompt = (value: string | undefined, fallbackMessage: string) => {
-    if (!value) {
-      showToast(fallbackMessage);
-      return;
-    }
-    void copyText(value, t.toast.copied);
-  };
-
   return (
     <div className="rounded-[28px] border border-white/70 bg-white/85 shadow-soft backdrop-blur-xl">
       <div className="border-b border-lavender-100 px-5 py-4">
@@ -107,18 +97,6 @@ export default function ReportPanel({ errorMessage, latestAssistantAnswer, repor
             </ToolButton>
             <ToolButton icon={<ClipboardCheck size={15} />} onClick={copyLastAnswer}>
               {t.report.actions.copyLast}
-            </ToolButton>
-            <ToolButton
-              icon={<Wand2 size={15} />}
-              onClick={() => copyOptionalPrompt(report?.optimizedPrompt, t.toast.optimizedNotFound)}
-            >
-              {t.report.actions.copyOptimized}
-            </ToolButton>
-            <ToolButton
-              icon={<Code2 size={15} />}
-              onClick={() => copyOptionalPrompt(report?.advancedPrompt, t.toast.advancedNotFound)}
-            >
-              {t.report.actions.copyAdvanced}
             </ToolButton>
             <ToolButton icon={<Download size={15} />} onClick={downloadMarkdown}>
               {t.report.actions.download}

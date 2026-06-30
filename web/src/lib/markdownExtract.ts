@@ -1,3 +1,5 @@
+// TODO(v0.3): Re-enable dedicated optimized/advanced prompt copy after Dify emits
+// stable structured fields or explicit Markdown markers.
 const optimizedHeadings = [
   '优化版 Prompt',
   '优化版 prompt',

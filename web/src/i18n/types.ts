@@ -65,10 +65,8 @@ export type Dictionary = {
   };
   report: {
     actions: {
-      copyAdvanced: string;
       copyFull: string;
       copyLast: string;
-      copyOptimized: string;
       download: string;
     };
     badges: {
@@ -88,7 +86,6 @@ export type Dictionary = {
     title: string;
   };
   toast: {
-    advancedNotFound: string;
     cleared: string;
     copied: string;
     downloaded: string;
@@ -97,7 +94,6 @@ export type Dictionary = {
     exampleFilled: string;
     newSession: string;
     noReport: string;
-    optimizedNotFound: string;
     reportCleared: string;
   };
 };

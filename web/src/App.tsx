@@ -7,7 +7,6 @@ import PromptForm, { type PromptFormState } from './components/PromptForm';
 import ReportPanel, { type ReportContent } from './components/ReportPanel';
 import { dictionaries, type Language } from './i18n';
 import { LocalApiError, sendLocalChatMessage } from './lib/apiClient';
-import { extractAdvancedPrompt, extractOptimizedPrompt } from './lib/markdownExtract';
 import { examplePrompt, mockReports } from './lib/mockReport';
 
 const formDraftKey = 'promptcheckup.formDraft';
@@ -177,12 +176,10 @@ export default function App() {
 
   const setLiveReport = (answer: string, messageId: string) => {
     setActiveReport({
-      advancedPrompt: extractAdvancedPrompt(answer),
       kind: 'live',
       lastAnswer: answer,
       markdown: answer,
-      messageId,
-      optimizedPrompt: extractOptimizedPrompt(answer)
+      messageId
     });
   };
 

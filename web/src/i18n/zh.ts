@@ -82,8 +82,6 @@ export const zh: Dictionary = {
     actions: {
       copyFull: '复制全文',
       copyLast: '复制最后回复',
-      copyOptimized: '复制优化版',
-      copyAdvanced: '复制增强版',
       download: '下载 Markdown'
     }
   },
@@ -130,10 +128,8 @@ export const zh: Dictionary = {
     draftSaved: '表单草稿已自动保存。',
     cleared: '表单已清空',
     exampleFilled: '示例已填入',
-    advancedNotFound: '当前报告中未找到可复制的增强版 Prompt。',
     newSession: '新会话已开始。表单内容已保留。',
     noReport: '当前没有可复制的报告',
-    optimizedNotFound: '当前报告中未找到可复制的优化版 Prompt。',
     reportCleared: '报告已清空'
   }
 };

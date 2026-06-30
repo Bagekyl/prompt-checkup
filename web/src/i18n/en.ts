@@ -82,8 +82,6 @@ export const en: Dictionary = {
     actions: {
       copyFull: 'Copy full report',
       copyLast: 'Copy last answer',
-      copyOptimized: 'Copy optimized prompt',
-      copyAdvanced: 'Copy advanced prompt',
       download: 'Download Markdown'
     }
   },
@@ -137,10 +135,8 @@ export const en: Dictionary = {
     draftSaved: 'Draft saved locally.',
     cleared: 'Form cleared',
     exampleFilled: 'Example filled',
-    advancedNotFound: 'Could not find an advanced prompt block in the current report.',
     newSession: 'New session started. Form inputs are preserved.',
     noReport: 'There is no report to copy yet',
-    optimizedNotFound: 'Could not find an optimized prompt block in the current report.',
     reportCleared: 'Report cleared'
   }
 };

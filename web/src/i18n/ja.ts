@@ -83,8 +83,6 @@ export const ja: Dictionary = {
     actions: {
       copyFull: '全文をコピー',
       copyLast: '最後の回答をコピー',
-      copyOptimized: '改善版をコピー',
-      copyAdvanced: '拡張版をコピー',
       download: 'Markdown を保存'
     }
   },
@@ -138,10 +136,8 @@ export const ja: Dictionary = {
     draftSaved: '下書きはローカルに保存されました。',
     cleared: 'フォームをクリアしました',
     exampleFilled: 'サンプルを入力しました',
-    advancedNotFound: '現在のレポート内にコピー可能な強化版プロンプトが見つかりませんでした。',
     newSession: '新しいセッションを開始しました。フォーム内容は保持されています。',
     noReport: 'コピーできるレポートはまだありません',
-    optimizedNotFound: '現在のレポート内にコピー可能な改善版プロンプトが見つかりませんでした。',
     reportCleared: 'レポートをクリアしました'
   }
 };
