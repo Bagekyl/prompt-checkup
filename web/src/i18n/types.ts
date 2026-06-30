@@ -31,6 +31,10 @@ export type Dictionary = {
       start: string;
     };
     context: FieldCopy;
+    demoAccessCode: FieldCopy & {
+      clear: string;
+      helper: string;
+    };
     description: string;
     kicker: string;
     outputRequirements: FieldCopy;

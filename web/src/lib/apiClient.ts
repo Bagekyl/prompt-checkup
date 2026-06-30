@@ -34,11 +34,24 @@ export class LocalApiError extends Error {
 }
 
 export async function sendLocalChatMessage(request: LocalChatRequest): Promise<LocalChatResponse> {
+  return sendLocalChatMessageWithOptions(request);
+}
+
+export async function sendLocalChatMessageWithOptions(
+  request: LocalChatRequest,
+  options: { demoAccessCode?: string } = {}
+): Promise<LocalChatResponse> {
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json'
+  };
+  const accessCode = options.demoAccessCode?.trim();
+  if (accessCode) {
+    headers['x-demo-access-code'] = accessCode;
+  }
+
   const response = await fetch('/api/chat', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers,
     body: JSON.stringify(request)
   });
 

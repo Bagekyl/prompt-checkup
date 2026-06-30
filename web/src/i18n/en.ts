@@ -42,6 +42,12 @@ export const en: Dictionary = {
       label: 'Context',
       placeholder: 'Add business context, audience, input source, or constraints.'
     },
+    demoAccessCode: {
+      label: 'Demo access code',
+      placeholder: 'Required for public demos',
+      clear: 'Clear code',
+      helper: 'The access code is stored only in localStorage and sent through a request header.'
+    },
     outputRequirements: {
       label: 'Output Requirements',
       placeholder: 'Describe Markdown, tables, JSON, citations, or fixed output structure.'

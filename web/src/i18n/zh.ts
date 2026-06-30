@@ -42,6 +42,12 @@ export const zh: Dictionary = {
       label: '背景信息',
       placeholder: '补充业务背景、用户对象、输入来源或限制条件。'
     },
+    demoAccessCode: {
+      label: '试用访问码',
+      placeholder: '公开 Demo 需要访问码',
+      clear: '清除访问码',
+      helper: '访问码只保存在本机浏览器 localStorage，并通过请求 header 发送。'
+    },
     outputRequirements: {
       label: '输出要求',
       placeholder: '说明你希望模型输出 Markdown、表格、JSON、引用或固定结构。'

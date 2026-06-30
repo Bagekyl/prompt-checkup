@@ -26,9 +26,12 @@ export type PromptFormState = {
 };
 
 type PromptFormProps = {
+  demoAccessCode: string;
   form: PromptFormState;
   language: Language;
+  onAccessCodeChange: (value: string) => void;
   onChange: (form: PromptFormState) => void;
+  onClearAccessCode: () => void;
   onClear: () => void;
   onFillExample: () => void;
   onStart: () => void;
@@ -38,7 +41,17 @@ type PromptFormProps = {
 const fieldClasses =
   'w-full rounded-2xl border border-lavender-100 bg-white/90 px-4 py-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-lavender-300 focus:ring-4 focus:ring-lavender-100';
 
-export default function PromptForm({ form, onChange, onClear, onFillExample, onStart, t }: PromptFormProps) {
+export default function PromptForm({
+  demoAccessCode,
+  form,
+  onAccessCodeChange,
+  onChange,
+  onClear,
+  onClearAccessCode,
+  onFillExample,
+  onStart,
+  t
+}: PromptFormProps) {
   const update = <K extends keyof PromptFormState>(key: K, value: PromptFormState[K]) =>
     onChange({ ...form, [key]: value });
 
@@ -136,6 +149,30 @@ export default function PromptForm({ form, onChange, onClear, onFillExample, onS
             ))}
           </select>
         </label>
+      </div>
+
+      <div className="mt-5 rounded-2xl border border-lavender-100 bg-lavender-50/50 p-4">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
+          <label className="min-w-0 flex-1">
+            <span className="mb-2 block text-sm font-semibold text-slate-800">{t.form.demoAccessCode.label}</span>
+            <input
+              autoComplete="off"
+              className={fieldClasses}
+              onChange={(event) => onAccessCodeChange(event.target.value)}
+              placeholder={t.form.demoAccessCode.placeholder}
+              type="password"
+              value={demoAccessCode}
+            />
+          </label>
+          <button
+            className="inline-flex min-h-11 items-center justify-center rounded-2xl border border-lavender-200 bg-white px-4 text-sm font-semibold text-lavender-700 transition hover:bg-lavender-50"
+            onClick={onClearAccessCode}
+            type="button"
+          >
+            {t.form.demoAccessCode.clear}
+          </button>
+        </div>
+        <p className="mt-2 text-xs leading-5 text-slate-500">{t.form.demoAccessCode.helper}</p>
       </div>
 
       <div className="mt-5 flex flex-col gap-3 xl:flex-row">

@@ -6,9 +6,10 @@ import MockControls, { type ReportStatus } from './components/MockControls';
 import PromptForm, { type PromptFormState } from './components/PromptForm';
 import ReportPanel, { type ReportContent } from './components/ReportPanel';
 import { dictionaries, type Language } from './i18n';
-import { LocalApiError, sendLocalChatMessage } from './lib/apiClient';
+import { LocalApiError, sendLocalChatMessageWithOptions } from './lib/apiClient';
 import { examplePrompt, mockReports } from './lib/mockReport';
 
+const accessCodeKey = 'promptcheckup.demoAccessCode';
 const formDraftKey = 'promptcheckup.formDraft';
 const languageKey = 'promptcheckup.uiLanguage';
 
@@ -32,6 +33,7 @@ export default function App() {
   const [errorMessage, setErrorMessage] = useState('');
   const [followUpError, setFollowUpError] = useState('');
   const [followUpLoading, setFollowUpLoading] = useState(false);
+  const [demoAccessCode, setDemoAccessCode] = useState(() => loadStoredAccessCode());
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [streamingMessageId, setStreamingMessageId] = useState('');
   const [toast, setToast] = useState('');
@@ -51,6 +53,14 @@ export default function App() {
       localStorage.removeItem(formDraftKey);
     }
   }, [form]);
+
+  useEffect(() => {
+    if (demoAccessCode.trim()) {
+      localStorage.setItem(accessCodeKey, demoAccessCode);
+    } else {
+      localStorage.removeItem(accessCodeKey);
+    }
+  }, [demoAccessCode]);
 
   const showToast = (message: string) => {
     setToast(message);
@@ -80,12 +90,15 @@ export default function App() {
     setFollowUpError('');
 
     try {
-      const response = await sendLocalChatMessage({
-        conversation_id: conversationId,
-        inputs: buildInputs(form, t),
-        query: t.form.startQuery,
-        user: 'local-user'
-      });
+      const response = await sendLocalChatMessageWithOptions(
+        {
+          conversation_id: conversationId,
+          inputs: buildInputs(form, t),
+          query: t.form.startQuery,
+          user: 'local-user'
+        },
+        { demoAccessCode }
+      );
 
       setConversationId(response.conversation_id);
       setLastMessageId(response.message_id);
@@ -152,12 +165,15 @@ export default function App() {
     setFollowUpError('');
 
     try {
-      const response = await sendLocalChatMessage({
-        conversation_id: conversationId,
-        inputs: buildInputs(form, t),
-        query,
-        user: 'local-user'
-      });
+      const response = await sendLocalChatMessageWithOptions(
+        {
+          conversation_id: conversationId,
+          inputs: buildInputs(form, t),
+          query,
+          user: 'local-user'
+        },
+        { demoAccessCode }
+      );
       setConversationId(response.conversation_id);
       setLastMessageId(response.message_id);
       if (updateMainReport) {
@@ -198,9 +214,12 @@ export default function App() {
         <main className="grid flex-1 grid-cols-1 gap-5 py-5 lg:grid-cols-[minmax(380px,0.92fr)_minmax(0,1.35fr)]">
           <section className="min-w-0">
             <PromptForm
+              demoAccessCode={demoAccessCode}
               form={form}
               language={language}
+              onAccessCodeChange={setDemoAccessCode}
               onChange={setForm}
+              onClearAccessCode={() => setDemoAccessCode('')}
               onClear={clearForm}
               onFillExample={fillExample}
               onStart={startDiagnosis}
@@ -270,6 +289,13 @@ function loadStoredLanguage(): Language {
   }
   const stored = localStorage.getItem(languageKey);
   return stored === 'en' || stored === 'ja' || stored === 'zh' ? stored : 'zh';
+}
+
+function loadStoredAccessCode() {
+  if (typeof window === 'undefined') {
+    return '';
+  }
+  return localStorage.getItem(accessCodeKey) || '';
 }
 
 function loadStoredForm(): PromptFormState {

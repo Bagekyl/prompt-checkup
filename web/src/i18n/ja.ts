@@ -43,6 +43,12 @@ export const ja: Dictionary = {
       label: '背景情報',
       placeholder: '業務背景、対象ユーザー、入力元、制約条件を補足してください。'
     },
+    demoAccessCode: {
+      label: 'デモアクセスコード',
+      placeholder: '公開デモではアクセスコードが必要です',
+      clear: 'コードをクリア',
+      helper: 'アクセスコードは localStorage のみに保存され、リクエストヘッダーで送信されます。'
+    },
     outputRequirements: {
       label: '出力要件',
       placeholder: 'Markdown、表、JSON、引用、固定フォーマットなどを指定してください。'
