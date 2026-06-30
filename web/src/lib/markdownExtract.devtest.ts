@@ -64,6 +64,28 @@ ${fence}`),
     expected: '# 目的\nより厳密に診断してください。'
   },
   {
+    name: 'Japanese enhanced prompt heading with markdown code block',
+    actual: extractAdvancedPrompt(`# レポート
+
+### 七、エンハンス版 Prompt
+より複雑な選考プロセスや、客観的で高精度な評価を行いたい場合に適したバージョンです。
+
+${fence}markdown
+# 役割
+あなたは大学の青年ボランティア協会（青協）の指導教員です。
+
+# 目的
+候補者の管理能力を測定できるグループディスカッション用テーマを設計してください。
+${fence}
+
+---
+
+### 八、使用上のアドバイス
+ここから次のセクションです。`),
+    expected:
+      '# 役割\nあなたは大学の青年ボランティア協会（青協）の指導教員です。\n\n# 目的\n候補者の管理能力を測定できるグループディスカッション用テーマを設計してください。'
+  },
+  {
     name: 'Skip invalid markdown-only code block',
     actual: extractAdvancedPrompt(`# Report
 
