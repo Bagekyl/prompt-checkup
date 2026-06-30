@@ -1,6 +1,6 @@
 # Local Dify API Wrapper
 
-PromptCheckup v0.2 adds a local wrapper service under `server/`.
+PromptCheckup v0.2.0 includes a local wrapper service under `server/`.
 
 The wrapper exists so the browser UI can call a local endpoint while the Dify App API key stays on the server side. This avoids putting `DIFY_API_KEY` in browser code, bundled JavaScript, or public frontend environment variables.
 
@@ -14,6 +14,8 @@ Browser Web UI
 ```
 
 The current implementation uses blocking mode only. Streaming UI and streaming transport can be considered in a later optimization step.
+
+The browser should call local `/api/chat`, not Dify directly.
 
 ## Environment
 
@@ -132,6 +134,34 @@ The response returned to the frontend is normalized:
 }
 ```
 
+## Common Errors
+
+### Missing key
+
+If `DIFY_API_KEY` is not configured, `/api/chat` returns a clear local error.
+Create `.env` from `.env.example` and fill a real Dify App API key.
+
+### Dify 400
+
+A 400 response usually means the Dify app rejected the request body or a Chatflow input value.
+The Web UI maps task type and review depth to canonical values before submission, but custom Dify Flow changes
+may require matching input definitions.
+
+### Dify 401 unauthorized
+
+A 401 response usually means the Dify App API key is missing, invalid, revoked, or belongs to a different app.
+Do not print the key while debugging.
+
+### Dify 504 timeout
+
+A 504 response usually means Dify or the model provider did not finish in time.
+Retry with a shorter prompt or check the model provider status.
+
+### Model provider error
+
+Model provider errors are controlled by the user's own Dify workspace configuration.
+Check provider credentials, quota, model availability, and workspace billing.
+
 ## Current Scope
 
 Implemented:
@@ -141,11 +171,11 @@ Implemented:
 - `/api/health`
 - `/api/chat`
 - Vite dev proxy from `/api` to `http://localhost:8787`
-- Frontend API client scaffold
+- Frontend diagnosis submission through local `/api/chat`
+- Multi-turn follow-up through the same endpoint
 
-Not implemented in this phase:
+Not implemented in v0.2.0:
 
-- Real frontend diagnosis submission
 - Streaming UI
 - Backend persistence
 - Database

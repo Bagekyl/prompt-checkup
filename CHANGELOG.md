@@ -1,15 +1,35 @@
 # Changelog
 
-## Unreleased - v0.2 Web UI Alpha
+## v0.2.0 - Local Web UI
 
-- Added local Web UI, local Dify API wrapper, real diagnosis calls, follow-up adjustment, multi-turn history,
-  local draft persistence, and Markdown report rendering.
-- Added stable report actions: copy full report, copy latest assistant answer, and download Markdown.
-- Changed: Removed dedicated optimized/advanced prompt copy buttons from the v0.2 Web UI because Dify currently
-  returns these sections as natural-language Markdown rather than stable machine-readable fields. Users can still
-  copy the full report, copy the latest answer, or download Markdown.
-- Planned for v0.3: restore dedicated optimized/advanced prompt copy after the Dify output contract provides
-  stable structured fields or explicit Markdown markers for `optimized_prompt` and `advanced_prompt`.
+### Added
+
+- Added a local React Web UI for PromptCheckup.
+- Added a local Node.js Dify API wrapper.
+- Added real Dify diagnosis through the user's own Dify App API.
+- Added multi-turn follow-up support.
+- Added re-diagnose current form.
+- Added new session handling.
+- Added local draft persistence.
+- Added Chinese / English / Japanese UI.
+- Added copy full report, copy last answer, and download Markdown actions.
+
+### Changed
+
+- Removed dedicated optimized / advanced prompt copy actions from v0.2 because Dify currently returns these
+  sections as natural-language Markdown rather than stable machine-readable fields.
+- Updated task type and review depth handling to submit canonical Dify values while keeping localized UI labels.
+
+### Security
+
+- Kept Dify API Key server-side in the local wrapper.
+- Confirmed browser requests use local `/api/chat` instead of calling Dify directly.
+
+### Known Limitations
+
+- Dedicated optimized / advanced prompt copy will return in a future version after Dify outputs stable structured
+  fields or Markdown markers.
+- Review-depth modes may need stronger Dify Flow prompt logic to produce more differentiated outputs.
 
 ## v0.1.0 - Initial Dify Flow Release
 

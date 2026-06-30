@@ -78,4 +78,5 @@ The flow then uses the updated form fields and returns to the full diagnostic pa
 
 - Users import the DSL into Dify and configure their own model provider.
 - The workflow depends on Dify-managed model calls and code nodes.
-- v0.1 does not include a web UI, local backend, database, user accounts, history, or marketplace automation.
+- v0.2.0 adds a local Web UI and local Dify API wrapper around the imported Chatflow.
+- v0.2.0 does not include database persistence, user accounts, cloud history, desktop packaging, or marketplace automation.
