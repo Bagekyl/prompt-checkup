@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Footer from './components/Footer';
-import FollowUpBox, { type FollowUpMessage } from './components/FollowUpBox';
+import FollowUpBox, { type ChatMessage } from './components/FollowUpBox';
 import Header from './components/Header';
 import MockControls, { type ReportStatus } from './components/MockControls';
 import PromptForm, { type PromptFormState } from './components/PromptForm';
@@ -8,7 +8,10 @@ import ReportPanel, { type ReportContent } from './components/ReportPanel';
 import { dictionaries, type Language } from './i18n';
 import { LocalApiError, sendLocalChatMessage } from './lib/apiClient';
 import { extractAdvancedPrompt, extractOptimizedPrompt } from './lib/markdownExtract';
-import { createFollowUpReply, examplePrompt, mockReports } from './lib/mockReport';
+import { examplePrompt, mockReports } from './lib/mockReport';
+
+const formDraftKey = 'promptcheckup.formDraft';
+const languageKey = 'promptcheckup.uiLanguage';
 
 const emptyForm: PromptFormState = {
   customTaskType: '',
@@ -21,17 +24,32 @@ const emptyForm: PromptFormState = {
 };
 
 export default function App() {
-  const [language, setLanguage] = useState<Language>('zh');
-  const [form, setForm] = useState<PromptFormState>(emptyForm);
+  const [language, setLanguage] = useState<Language>(() => loadStoredLanguage());
+  const [form, setForm] = useState<PromptFormState>(() => loadStoredForm());
   const [status, setStatus] = useState<ReportStatus>('empty');
   const [activeReport, setActiveReport] = useState<ReportContent | null>(null);
   const [conversationId, setConversationId] = useState('');
   const [lastMessageId, setLastMessageId] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [messages, setMessages] = useState<FollowUpMessage[]>([]);
+  const [followUpError, setFollowUpError] = useState('');
+  const [followUpLoading, setFollowUpLoading] = useState(false);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [streamingMessageId, setStreamingMessageId] = useState('');
   const [toast, setToast] = useState('');
   const t = dictionaries[language];
   const mockReport = useMemo(() => mockReports[language], [language]);
+
+  useEffect(() => {
+    localStorage.setItem(languageKey, language);
+  }, [language]);
+
+  useEffect(() => {
+    if (hasFormDraft(form)) {
+      localStorage.setItem(formDraftKey, JSON.stringify(form));
+    } else {
+      localStorage.removeItem(formDraftKey);
+    }
+  }, [form]);
 
   const showToast = (message: string) => {
     setToast(message);
@@ -41,6 +59,7 @@ export default function App() {
   const showMockReport = () => {
     setActiveReport({ ...mockReport, kind: 'mock' });
     setErrorMessage('');
+    setFollowUpError('');
     setStatus('loading');
     window.setTimeout(() => setStatus('report'), 900);
   };
@@ -57,32 +76,20 @@ export default function App() {
 
     setStatus('loading');
     setErrorMessage('');
+    setFollowUpError('');
 
     try {
       const response = await sendLocalChatMessage({
         conversation_id: conversationId,
-        inputs: {
-          prompt_text: form.prompt,
-          task_description: form.taskDescription,
-          task_type: getTaskTypeLabel(form, t),
-          context: form.context,
-          output_requirements: form.outputRequirements,
-          review_depth: getReviewDepthLabel(form, t)
-        },
+        inputs: buildInputs(form, t),
         query: t.form.startQuery,
         user: 'local-user'
       });
 
       setConversationId(response.conversation_id);
       setLastMessageId(response.message_id);
-      setActiveReport({
-        advancedPrompt: extractAdvancedPrompt(response.answer),
-        kind: 'live',
-        lastAnswer: response.answer,
-        markdown: response.answer,
-        messageId: response.message_id,
-        optimizedPrompt: extractOptimizedPrompt(response.answer)
-      });
+      setLiveReport(response.answer, response.message_id);
+      appendAssistantMessage(response.answer, 'diagnosis');
       setStatus('report');
     } catch (error) {
       setErrorMessage(getReadableErrorMessage(error, t));
@@ -92,10 +99,7 @@ export default function App() {
 
   const clearForm = () => {
     setForm(emptyForm);
-    setStatus('empty');
-    setMessages([]);
-    setActiveReport(null);
-    setErrorMessage('');
+    localStorage.removeItem(formDraftKey);
     showToast(t.toast.cleared);
   };
 
@@ -107,7 +111,6 @@ export default function App() {
 
   const clearReport = () => {
     setStatus('empty');
-    setMessages([]);
     setActiveReport(null);
     setErrorMessage('');
     showToast(t.toast.reportCleared);
@@ -116,29 +119,71 @@ export default function App() {
   const setMockError = () => {
     setErrorMessage(t.report.errorDescription);
     setStatus('error');
-    setMessages([]);
   };
 
   const newSession = () => {
     setConversationId('');
     setLastMessageId('');
     setMessages([]);
+    setActiveReport(null);
+    setStatus('empty');
+    setErrorMessage('');
+    setFollowUpError('');
+    setStreamingMessageId('');
     showToast(t.toast.newSession);
   };
 
   const onSendFollowUp = (content: string) => {
-    const userMessage: FollowUpMessage = {
-      id: crypto.randomUUID(),
-      role: 'user',
-      content
-    };
-    const assistantMessage: FollowUpMessage = {
-      id: crypto.randomUUID(),
-      role: 'assistant',
-      content: createFollowUpReply(language, content)
-    };
-    setMessages((current) => [...current, userMessage, assistantMessage]);
-    setStatus((current) => (current === 'empty' && activeReport ? 'report' : current));
+    const reDiagnoseAction = t.followUp.quickActions[t.followUp.quickActions.length - 1];
+    const query = content === reDiagnoseAction ? t.followUp.reDiagnoseQuery : content;
+    void sendFollowUp(query);
+  };
+
+  const sendFollowUp = async (query: string) => {
+    if (!conversationId) {
+      showToast(t.followUp.noConversation);
+      return;
+    }
+
+    const userMessage = createMessage('user', query, 'follow_up');
+    setMessages((current) => [...current, userMessage]);
+    setFollowUpLoading(true);
+    setFollowUpError('');
+
+    try {
+      const response = await sendLocalChatMessage({
+        conversation_id: conversationId,
+        inputs: buildInputs(form, t),
+        query,
+        user: 'local-user'
+      });
+      setConversationId(response.conversation_id);
+      setLastMessageId(response.message_id);
+      setLiveReport(response.answer, response.message_id);
+      appendAssistantMessage(response.answer, 'follow_up');
+      setStatus('report');
+    } catch (error) {
+      setFollowUpError(getReadableErrorMessage(error, t));
+    } finally {
+      setFollowUpLoading(false);
+    }
+  };
+
+  const setLiveReport = (answer: string, messageId: string) => {
+    setActiveReport({
+      advancedPrompt: extractAdvancedPrompt(answer),
+      kind: 'live',
+      lastAnswer: answer,
+      markdown: answer,
+      messageId,
+      optimizedPrompt: extractOptimizedPrompt(answer)
+    });
+  };
+
+  const appendAssistantMessage = (answer: string, kind: NonNullable<ChatMessage['kind']>) => {
+    const assistantMessage = createMessage('assistant', answer, kind);
+    setMessages((current) => [...current, assistantMessage]);
+    setStreamingMessageId(assistantMessage.id);
   };
 
   return (
@@ -165,9 +210,12 @@ export default function App() {
             <ReportPanel errorMessage={errorMessage} report={activeReport} showToast={showToast} status={status} t={t} />
             <FollowUpBox
               conversationId={conversationId}
+              errorMessage={followUpError}
+              isLoading={followUpLoading}
               messages={messages}
               onNewSession={newSession}
               onSend={onSendFollowUp}
+              streamingMessageId={streamingMessageId}
               t={t}
             />
           </section>
@@ -183,6 +231,89 @@ export default function App() {
       ) : null}
     </div>
   );
+}
+
+function buildInputs(form: PromptFormState, t: (typeof dictionaries)['zh']) {
+  return {
+    prompt_text: form.prompt,
+    task_description: form.taskDescription,
+    task_type: getTaskTypeLabel(form, t),
+    context: form.context,
+    output_requirements: form.outputRequirements,
+    review_depth: getReviewDepthLabel(form, t)
+  };
+}
+
+function createMessage(role: ChatMessage['role'], content: string, kind: NonNullable<ChatMessage['kind']>): ChatMessage {
+  return {
+    content,
+    createdAt: new Date().toISOString(),
+    id: crypto.randomUUID(),
+    kind,
+    role
+  };
+}
+
+function loadStoredLanguage(): Language {
+  if (typeof window === 'undefined') {
+    return 'zh';
+  }
+  const stored = localStorage.getItem(languageKey);
+  return stored === 'en' || stored === 'ja' || stored === 'zh' ? stored : 'zh';
+}
+
+function loadStoredForm(): PromptFormState {
+  if (typeof window === 'undefined') {
+    return emptyForm;
+  }
+  const stored = localStorage.getItem(formDraftKey);
+  if (!stored) {
+    return emptyForm;
+  }
+  try {
+    const parsed = JSON.parse(stored) as Partial<PromptFormState>;
+    return {
+      customTaskType: typeof parsed.customTaskType === 'string' ? parsed.customTaskType : '',
+      prompt: typeof parsed.prompt === 'string' ? parsed.prompt : '',
+      taskDescription: typeof parsed.taskDescription === 'string' ? parsed.taskDescription : '',
+      taskType: isTaskType(parsed.taskType) ? parsed.taskType : 'general',
+      context: typeof parsed.context === 'string' ? parsed.context : '',
+      outputRequirements: typeof parsed.outputRequirements === 'string' ? parsed.outputRequirements : '',
+      reviewDepth: isReviewDepth(parsed.reviewDepth) ? parsed.reviewDepth : 'standard'
+    };
+  } catch {
+    return emptyForm;
+  }
+}
+
+function hasFormDraft(form: PromptFormState) {
+  return Boolean(
+    form.prompt.trim() ||
+      form.taskDescription.trim() ||
+      form.customTaskType.trim() ||
+      form.context.trim() ||
+      form.outputRequirements.trim() ||
+      form.taskType !== 'general' ||
+      form.reviewDepth !== 'standard'
+  );
+}
+
+function isTaskType(value: unknown): value is PromptFormState['taskType'] {
+  return (
+    value === 'general' ||
+    value === 'learning' ||
+    value === 'writing' ||
+    value === 'content' ||
+    value === 'rag' ||
+    value === 'coding' ||
+    value === 'data' ||
+    value === 'translation' ||
+    value === 'custom'
+  );
+}
+
+function isReviewDepth(value: unknown): value is PromptFormState['reviewDepth'] {
+  return value === 'quick' || value === 'standard' || value === 'deep' || value === 'optimizedOnly' || value === 'strict';
 }
 
 function getReviewDepthLabel(form: PromptFormState, t: (typeof dictionaries)['zh']) {
@@ -203,7 +334,7 @@ function getReadableErrorMessage(error: unknown, t: (typeof dictionaries)['zh'])
     if (error.status) {
       parts.push(`Status: ${error.status}`);
     }
-    if (!/DIFY_API_KEY is not configured/i.test(error.message)) {
+    if (!/not configured/i.test(error.message)) {
       parts.push(t.report.difyErrorHint);
     }
     return parts.join(' ');
