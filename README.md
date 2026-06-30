@@ -79,7 +79,13 @@ dify/prompt-checkup.yml
 - v0.2.0: Web UI + Local Wrapper
 - v0.3.0: Expanded Multilingual Support
 
-当前版本不包含 Web UI。本地浏览器交互界面和本地 Dify API wrapper 计划在 v0.2 中实现。
+v0.2 alpha adds a local Web UI and local Dify API wrapper with real diagnosis calls, follow-up adjustment,
+multi-turn history, local draft persistence, copy full report, copy last answer, and download Markdown.
+
+v0.3 planned: improve the Dify Flow output contract by adding stable structured fields or explicit Markdown
+markers for `optimized_prompt` and `advanced_prompt`. The dedicated optimized/advanced prompt copy buttons will
+be restored after the backend output becomes reliably machine-readable.
+
 更多正式支持语言计划在 v0.3 中扩展。
 
 ## Safety Notes

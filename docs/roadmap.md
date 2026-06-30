@@ -18,7 +18,10 @@ The goal is to implement a browser interaction interface similar in spirit to th
 - Form input area
 - Follow-up chat input
 - Markdown report rendering
-- Copy buttons for optimized and advanced prompts
+- Copy full report
+- Copy latest assistant answer
+- Download Markdown
+- Local form draft persistence
 - Loading / error / empty-state handling
 - Minimal local backend wrapper for calling the Dify API without exposing API keys in browser
 - Local setup guide
@@ -41,3 +44,10 @@ v0.3 focuses on adding more officially tested languages.
 - Language-specific test cases
 - Updated prompt templates and report wording
 - Regression tests for new languages
+- Improve the Dify Flow output contract by adding stable structured fields or explicit Markdown markers for
+  `optimized_prompt` and `advanced_prompt`
+- Restore dedicated optimized/advanced prompt copy buttons after those sections become reliably machine-readable
+- Future improvement: strengthen Dify Flow handling of `review_depth` so Quick Review, Standard Review,
+  Deep Review, Optimized Prompt Only, and Strict Scoring Mode produce more clearly differentiated outputs
+- Future improvement: make the Dify final report prompt wrap optimized and advanced prompts in stable fenced
+  code blocks or structured fields
