@@ -38,6 +38,8 @@ export default function App() {
   const [toast, setToast] = useState('');
   const t = dictionaries[language];
   const mockReport = useMemo(() => mockReports[language], [language]);
+  const latestAssistantAnswer =
+    [...messages].reverse().find((message) => message.role === 'assistant')?.content || activeReport?.lastAnswer || '';
 
   useEffect(() => {
     localStorage.setItem(languageKey, language);
@@ -136,10 +138,10 @@ export default function App() {
   const onSendFollowUp = (content: string) => {
     const reDiagnoseAction = t.followUp.quickActions[t.followUp.quickActions.length - 1];
     const query = content === reDiagnoseAction ? t.followUp.reDiagnoseQuery : content;
-    void sendFollowUp(query);
+    void sendFollowUp(query, content === reDiagnoseAction);
   };
 
-  const sendFollowUp = async (query: string) => {
+  const sendFollowUp = async (query: string, updateMainReport = false) => {
     if (!conversationId) {
       showToast(t.followUp.noConversation);
       return;
@@ -159,9 +161,13 @@ export default function App() {
       });
       setConversationId(response.conversation_id);
       setLastMessageId(response.message_id);
-      setLiveReport(response.answer, response.message_id);
+      if (updateMainReport) {
+        setLiveReport(response.answer, response.message_id);
+      }
       appendAssistantMessage(response.answer, 'follow_up');
-      setStatus('report');
+      if (updateMainReport || activeReport) {
+        setStatus('report');
+      }
     } catch (error) {
       setFollowUpError(getReadableErrorMessage(error, t));
     } finally {
@@ -207,7 +213,14 @@ export default function App() {
 
           <section className="flex min-w-0 flex-col gap-4">
             <MockControls onClear={clearReport} onError={setMockError} onMockReport={showMockReport} t={t} />
-            <ReportPanel errorMessage={errorMessage} report={activeReport} showToast={showToast} status={status} t={t} />
+            <ReportPanel
+              errorMessage={errorMessage}
+              latestAssistantAnswer={latestAssistantAnswer}
+              report={activeReport}
+              showToast={showToast}
+              status={status}
+              t={t}
+            />
             <FollowUpBox
               conversationId={conversationId}
               errorMessage={followUpError}
@@ -225,7 +238,7 @@ export default function App() {
       </div>
 
       {toast ? (
-        <div className="fixed bottom-5 left-1/2 z-50 -translate-x-1/2 rounded-full border border-lavender-200 bg-white/95 px-4 py-2 text-sm font-medium text-lavender-800 shadow-soft backdrop-blur">
+        <div className="toast-pop fixed bottom-5 left-1/2 z-50 -translate-x-1/2 rounded-full border border-lavender-200 bg-white/95 px-4 py-2 text-sm font-medium text-lavender-800 shadow-soft backdrop-blur">
           {toast}
         </div>
       ) : null}

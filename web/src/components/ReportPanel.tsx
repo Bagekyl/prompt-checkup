@@ -18,6 +18,7 @@ export type ReportContent = {
 
 type ReportPanelProps = {
   errorMessage?: string;
+  latestAssistantAnswer?: string;
   report: ReportContent | null;
   showToast: (message: string) => void;
   status: ReportStatus;
@@ -34,7 +35,7 @@ const markdownComponents: Components = {
   }
 };
 
-export default function ReportPanel({ errorMessage, report, showToast, status, t }: ReportPanelProps) {
+export default function ReportPanel({ errorMessage, latestAssistantAnswer, report, showToast, status, t }: ReportPanelProps) {
   const markdown = report?.markdown || '';
   const badgeLabel = getReportBadgeLabel(status, report, t);
   const visibleReport = useProgressiveText(status === 'report' ? markdown : '', {
@@ -72,11 +73,12 @@ export default function ReportPanel({ errorMessage, report, showToast, status, t
   };
 
   const copyLastAnswer = () => {
-    if (!report) {
+    const answer = latestAssistantAnswer || report?.lastAnswer;
+    if (!answer) {
       showToast(t.toast.noReport);
       return;
     }
-    void copyText(report.lastAnswer, t.toast.copied);
+    void copyText(answer, t.toast.copied);
   };
 
   const copyOptionalPrompt = (value: string | undefined, fallbackMessage: string) => {
