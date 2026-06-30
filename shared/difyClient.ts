@@ -1,5 +1,4 @@
-import { env, isDifyConfigured } from './env.js';
-import type { ChatResponse, SafeErrorResponse } from './types.js';
+import type { ChatResponse, DifyClientConfig } from './types.js';
 import type { ValidatedChatRequest } from './validation.js';
 
 type DifyChatResponse = {
@@ -12,8 +11,8 @@ type DifyChatResponse = {
 };
 
 export class DifyClientError extends Error {
-  status: number;
   details?: unknown;
+  status: number;
 
   constructor(message: string, status = 500, details?: unknown) {
     super(message);
@@ -23,8 +22,12 @@ export class DifyClientError extends Error {
   }
 }
 
-export async function sendChatMessage(request: ValidatedChatRequest): Promise<ChatResponse> {
-  if (!isDifyConfigured()) {
+export function isDifyConfigured(apiKey?: string) {
+  return Boolean(apiKey && apiKey !== 'your_dify_app_api_key_here');
+}
+
+export async function sendChatMessage(request: ValidatedChatRequest, config: DifyClientConfig): Promise<ChatResponse> {
+  if (!isDifyConfigured(config.apiKey)) {
     throw new DifyClientError('DIFY_API_KEY is not configured', 500);
   }
 
@@ -32,14 +35,14 @@ export async function sendChatMessage(request: ValidatedChatRequest): Promise<Ch
     inputs: request.inputs,
     query: request.query,
     response_mode: 'blocking',
-    user: request.user || env.difyUser,
+    user: request.user || config.defaultUser,
     ...(request.conversation_id ? { conversation_id: request.conversation_id } : {})
   };
 
-  const response = await fetch(`${env.difyApiBaseUrl}/chat-messages`, {
+  const response = await fetch(`${stripTrailingSlash(config.apiBaseUrl)}/chat-messages`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${env.difyApiKey}`,
+      Authorization: `Bearer ${config.apiKey}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(payload)
@@ -61,6 +64,10 @@ export async function sendChatMessage(request: ValidatedChatRequest): Promise<Ch
       usage: chatData.metadata?.usage
     }
   };
+}
+
+function stripTrailingSlash(value: string) {
+  return value.replace(/\/+$/, '');
 }
 
 async function safeJson(response: Response) {

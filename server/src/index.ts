@@ -1,8 +1,8 @@
 import cors from 'cors';
 import express from 'express';
-import { DifyClientError, sendChatMessage } from './difyClient.js';
-import { env, isDifyConfigured } from './env.js';
-import { chatRequestSchema } from './validation.js';
+import { DifyClientError, sendChatMessage } from '../../shared/difyClient.js';
+import { chatRequestSchema } from '../../shared/validation.js';
+import { env, getDifyClientConfig, isDifyConfigured } from './env.js';
 
 const app = express();
 
@@ -29,7 +29,7 @@ app.post('/api/chat', async (request, response) => {
   }
 
   try {
-    const result = await sendChatMessage(parsed.data);
+    const result = await sendChatMessage(parsed.data, getDifyClientConfig());
     response.json(result);
   } catch (error) {
     if (error instanceof DifyClientError) {

@@ -23,7 +23,13 @@ export type ChatResponse = {
   };
 };
 
+export type DifyClientConfig = {
+  apiBaseUrl: string;
+  apiKey?: string;
+  defaultUser: string;
+};
+
 export type SafeErrorResponse = {
-  error: string;
   details?: unknown;
+  error: string;
 };
