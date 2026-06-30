@@ -1,8 +1,8 @@
 {
   "name": "prompt-checkup",
-  "version": "0.2.0-alpha.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "PromptCheckup local Web UI and Dify API wrapper prototype.",
+  "description": "PromptCheckup local Web UI and Dify API wrapper.",
   "scripts": {
     "dev": "concurrently -n server,web -c blue,magenta \"npm run dev --workspace server\" \"npm run dev --workspace web\"",
     "dev:server": "npm run dev --workspace server",

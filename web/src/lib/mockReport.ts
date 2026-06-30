@@ -148,7 +148,7 @@ export const mockReports: Record<Language, MockReport> = {
     lastAnswer: '已根据上一轮报告生成一版更安全的 RAG Prompt，重点避免无依据推测和伪造引用。',
     markdown: `# Prompt 体检报告
 
-> 这是 Web UI 静态原型中的 mock report，用于验证 Markdown 渲染、复制、下载和渐进展示效果。
+> 这是开发者预览工具中的 mock report，用于验证 Markdown 渲染、复制、下载和渐进展示效果。
 
 ## 总体结论
 
@@ -182,7 +182,7 @@ ${advancedZh}
 
 ---
 
-后续建议：在连接 Dify API 后，将本报告区域替换为真实 Chatflow 输出，并保留复制与下载能力。`
+后续建议：正式诊断请使用表单调用你的 Dify Chatflow。`
   },
   en: {
     optimizedPrompt: optimizedEn,
@@ -190,7 +190,7 @@ ${advancedZh}
     lastAnswer: 'The optimized prompt now separates observed evidence from recommendations and avoids unsupported claims.',
     markdown: `# Prompt Diagnosis Report
 
-> This is a mock report for the static Web UI prototype. It validates Markdown rendering, copy actions, download, and progressive display.
+> This is a mock report from Developer Preview Tools. It validates Markdown rendering, copy actions, download, and progressive display.
 
 ## Overall Assessment
 
@@ -224,7 +224,7 @@ ${advancedEn}
 
 ---
 
-Next step: when the Dify API is connected, replace this mock report with the real Chatflow response while keeping copy and export actions.`
+Next step: use the form to call your Dify Chatflow for a real diagnosis.`
   },
   ja: {
     optimizedPrompt: optimizedJa,
@@ -232,7 +232,7 @@ Next step: when the Dify API is connected, replace this mock report with the rea
     lastAnswer: '改善版では、学習者レベル、添削方針、確認できない内容の扱いを明確にしました。',
     markdown: `# プロンプト診断レポート
 
-> これは Web UI 静的プロトタイプ用の mock report です。Markdown 表示、コピー、保存、段階的な表示を確認するためのものです。
+> これは開発者プレビューツールの mock report です。Markdown 表示、コピー、保存、段階的な表示を確認するためのものです。
 
 ## 総合評価
 
@@ -266,16 +266,16 @@ ${advancedJa}
 
 ---
 
-次の段階では、Dify API 接続後にこの mock report を実際の Chatflow 出力に置き換えます。`
+正式な診断では、フォームからあなたの Dify Chatflow を呼び出してください。`
   }
 };
 
 export function createFollowUpReply(language: Language, userRequest: string) {
   if (language === 'en') {
-    return `Mock adjustment received: "${userRequest}". In the connected version, this will be sent as a follow-up request to the Dify Chatflow. For now, the prototype would return a shorter and stricter version of the advanced prompt.`;
+    return `Mock adjustment received: "${userRequest}". Developer Preview Tools can still simulate UI states, while the normal follow-up box sends real requests through the local Dify wrapper.`;
   }
   if (language === 'ja') {
-    return `Mock 調整を受け取りました：「${userRequest}」。接続版では、この内容を Dify Chatflow の追加入力として送信します。現段階では、拡張版プロンプトを短く、より明確にした結果を返す想定です。`;
+    return `Mock 調整を受け取りました：「${userRequest}」。開発者プレビューツールでは UI 状態を確認できます。通常の追加指示欄はローカル Dify ラッパー経由で実リクエストを送信します。`;
   }
-  return `已收到 mock 追问：「${userRequest}」。接入 Dify Chatflow 后，这里会把追问作为多轮调整请求发送。当前原型会模拟返回一版更短、更严格的增强版 Prompt。`;
+  return `已收到 mock 追问：「${userRequest}」。开发者预览工具仍可模拟 UI 状态；正式追问输入框会通过本地 Dify wrapper 发送真实请求。`;
 }
