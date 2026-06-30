@@ -4,14 +4,20 @@ const optimizedHeadings = [
   '优化后的 Prompt',
   '基础优化版 Prompt',
   '改善版 Prompt',
+  '优化 Prompt',
+  '优化后的提示词',
   'Optimized Prompt',
   'optimized prompt',
   'Optimized Version',
   'Improved Prompt',
   'Basic Optimized Prompt',
   '最適化されたプロンプト',
+  '最適化された Prompt',
   '改善版プロンプト',
-  '改善された Prompt'
+  '改善版 Prompt',
+  '改善されたプロンプト',
+  '改善された Prompt',
+  '最適化プロンプト'
 ];
 
 const advancedHeadings = [
@@ -20,14 +26,21 @@ const advancedHeadings = [
   '强化版 Prompt',
   '完整增强版 Prompt',
   '高级版 Prompt',
+  '增强后的 Prompt',
+  '强化后的 Prompt',
   'Advanced Prompt',
   'advanced prompt',
   'Enhanced Prompt',
   'Advanced Version',
+  'Enhanced Version',
   '強化版プロンプト',
+  '強化版 Prompt',
   '詳細版プロンプト',
+  '詳細版 Prompt',
   '高度なプロンプト',
-  '拡張版プロンプト'
+  '高度な Prompt',
+  '拡張版プロンプト',
+  '拡張版 Prompt'
 ];
 
 export function extractOptimizedPrompt(markdown: string) {
@@ -130,15 +143,24 @@ function parseHeadingLine(line: string) {
 }
 
 function matchesHeading(value: string, normalizedHeadings: string[]) {
-  const normalized = normalizeHeading(value);
+  const normalized = normalizeHeading(stripHeadingNumber(value));
   return normalizedHeadings.some((heading) => normalized.includes(heading) || heading.includes(normalized));
 }
 
 function normalizeHeading(value: string) {
   return value
     .toLowerCase()
-    .replace(/[`*_#~:：\-–—()[\]【】「」『』]/g, '')
+    .replace(/[`*_#~:：;；,.，。、\-–—()[\]【】「」『』]/g, ' ')
     .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function stripHeadingNumber(value: string) {
+  return value
+    .trim()
+    .replace(/^(?:第?\s*)?[一二三四五六七八九十百千万]+[、.．:：\s-]*/u, '')
+    .replace(/^\d+(?:\.\d+)*[、.．:：\s-]*/u, '')
+    .replace(/^[ivxlcdm]+[.)、.．:：\s-]*/iu, '')
     .trim();
 }
 
