@@ -236,11 +236,11 @@ export default function App() {
 function buildInputs(form: PromptFormState, t: (typeof dictionaries)['zh']) {
   return {
     prompt_text: form.prompt,
-    task_description: form.taskDescription,
-    task_type: getTaskTypeLabel(form, t),
+    task_description: getTaskDescriptionPayload(form, t),
+    task_type: getTaskTypeCanonical(form.taskType),
     context: form.context,
     output_requirements: form.outputRequirements,
-    review_depth: getReviewDepthLabel(form, t)
+    review_depth: getReviewDepthCanonical(form.reviewDepth)
   };
 }
 
@@ -276,7 +276,7 @@ function loadStoredForm(): PromptFormState {
       customTaskType: typeof parsed.customTaskType === 'string' ? parsed.customTaskType : '',
       prompt: typeof parsed.prompt === 'string' ? parsed.prompt : '',
       taskDescription: typeof parsed.taskDescription === 'string' ? parsed.taskDescription : '',
-      taskType: isTaskType(parsed.taskType) ? parsed.taskType : 'general',
+      taskType: normalizeTaskType(parsed.taskType),
       context: typeof parsed.context === 'string' ? parsed.context : '',
       outputRequirements: typeof parsed.outputRequirements === 'string' ? parsed.outputRequirements : '',
       reviewDepth: isReviewDepth(parsed.reviewDepth) ? parsed.reviewDepth : 'standard'
@@ -302,8 +302,10 @@ function isTaskType(value: unknown): value is PromptFormState['taskType'] {
   return (
     value === 'general' ||
     value === 'learning' ||
-    value === 'writing' ||
     value === 'content' ||
+    value === 'summary' ||
+    value === 'extraction' ||
+    value === 'qa' ||
     value === 'rag' ||
     value === 'coding' ||
     value === 'data' ||
@@ -312,20 +314,56 @@ function isTaskType(value: unknown): value is PromptFormState['taskType'] {
   );
 }
 
+function normalizeTaskType(value: unknown): PromptFormState['taskType'] {
+  if (isTaskType(value)) {
+    return value;
+  }
+  if (value === 'writing') {
+    return 'summary';
+  }
+  return 'general';
+}
+
 function isReviewDepth(value: unknown): value is PromptFormState['reviewDepth'] {
   return value === 'quick' || value === 'standard' || value === 'deep' || value === 'optimizedOnly' || value === 'strict';
 }
 
-function getReviewDepthLabel(form: PromptFormState, t: (typeof dictionaries)['zh']) {
-  return t.form.reviewDepth.options.find((option) => option.value === form.reviewDepth)?.label || form.reviewDepth;
+function getReviewDepthCanonical(reviewDepth: PromptFormState['reviewDepth']) {
+  const values: Record<PromptFormState['reviewDepth'], string> = {
+    quick: '快速诊断',
+    standard: '标准诊断',
+    deep: '深度诊断',
+    optimizedOnly: '只输出优化版',
+    strict: '严格评分模式'
+  };
+  return values[reviewDepth];
 }
 
-function getTaskTypeLabel(form: PromptFormState, t: (typeof dictionaries)['zh']) {
-  if (form.taskType === 'custom') {
-    return form.customTaskType.trim() || t.form.taskType.options.find((option) => option.value === 'custom')?.label || '';
+function getTaskTypeCanonical(taskType: PromptFormState['taskType']) {
+  const values: Record<PromptFormState['taskType'], string> = {
+    general: '通用任务',
+    content: '内容生成',
+    summary: '总结改写',
+    extraction: '信息提取',
+    qa: '问答助手',
+    learning: '学习辅导',
+    coding: '编程辅助',
+    data: '数据分析',
+    translation: '翻译 / 多语言',
+    rag: '问答助手',
+    custom: '通用任务'
+  };
+  return values[taskType];
+}
+
+function getTaskDescriptionPayload(form: PromptFormState, t: (typeof dictionaries)['zh']) {
+  const customTaskType = form.customTaskType.trim();
+  if (form.taskType !== 'custom' || !customTaskType) {
+    return form.taskDescription;
   }
 
-  return t.form.taskType.options.find((option) => option.value === form.taskType)?.label || form.taskType;
+  const customLine = `${t.form.taskType.customPayloadPrefix} ${customTaskType}`;
+  return [form.taskDescription.trim(), customLine].filter(Boolean).join('\n\n');
 }
 
 function getReadableErrorMessage(error: unknown, t: (typeof dictionaries)['zh']) {

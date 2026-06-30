@@ -7,6 +7,7 @@ export type Dictionary = {
     difyTemplate: string;
     documentation: string;
     lines: string[];
+    localWebUi: string;
     roadmap: string;
   };
   followUp: {
@@ -42,6 +43,7 @@ export type Dictionary = {
     taskDescription: FieldCopy;
     taskType: FieldCopy & {
       customLabel: string;
+      customPayloadPrefix: string;
       customPlaceholder: string;
       options: Array<{ label: string; value: TaskType }>;
     };

@@ -2,7 +2,18 @@ import { ClipboardPenLine, Eraser, Play, Sparkles } from 'lucide-react';
 import type { Dictionary, Language } from '../i18n';
 
 export type ReviewDepth = 'quick' | 'standard' | 'deep' | 'optimizedOnly' | 'strict';
-export type TaskType = 'general' | 'learning' | 'writing' | 'content' | 'rag' | 'coding' | 'data' | 'translation' | 'custom';
+export type TaskType =
+  | 'coding'
+  | 'content'
+  | 'custom'
+  | 'data'
+  | 'extraction'
+  | 'general'
+  | 'learning'
+  | 'qa'
+  | 'rag'
+  | 'summary'
+  | 'translation';
 
 export type PromptFormState = {
   customTaskType: string;
@@ -55,13 +66,17 @@ export default function PromptForm({ form, onChange, onClear, onFillExample, onS
           />
         </label>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <TextField
-            label={t.form.taskDescription.label}
-            onChange={(value) => update('taskDescription', value)}
+        <label className="block">
+          <span className="mb-2 block text-sm font-semibold text-slate-800">{t.form.taskDescription.label}</span>
+          <textarea
+            className={`${fieldClasses} min-h-[104px] resize-y`}
+            onChange={(event) => update('taskDescription', event.target.value)}
             placeholder={t.form.taskDescription.placeholder}
             value={form.taskDescription}
           />
+        </label>
+
+        <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(170px,0.46fr)]">
           <label className="block">
             <span className="mb-2 block text-sm font-semibold text-slate-800">{t.form.taskType.label}</span>
             <select

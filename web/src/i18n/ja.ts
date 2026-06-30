@@ -23,16 +23,19 @@ export const ja: Dictionary = {
       label: 'タスクタイプ',
       placeholder: 'タスクタイプを選択',
       customLabel: 'カスタムタスクタイプ',
+      customPayloadPrefix: 'ユーザー定義タスクタイプ：',
       customPlaceholder: 'カスタムタスクタイプを入力',
       options: [
         { label: '汎用タスク', value: 'general' },
-        { label: '学習支援', value: 'learning' },
-        { label: '文章添削', value: 'writing' },
         { label: 'コンテンツ生成', value: 'content' },
-        { label: 'RAG / ナレッジベースQA', value: 'rag' },
+        { label: '要約・書き換え', value: 'summary' },
+        { label: '情報抽出', value: 'extraction' },
+        { label: 'QA アシスタント', value: 'qa' },
+        { label: '学習支援', value: 'learning' },
         { label: 'コーディング支援', value: 'coding' },
         { label: 'データ分析', value: 'data' },
         { label: '翻訳 / 多言語', value: 'translation' },
+        { label: 'RAG / ナレッジベースQA', value: 'rag' },
         { label: 'カスタム', value: 'custom' }
       ]
     },
@@ -47,10 +50,10 @@ export const ja: Dictionary = {
     reviewDepth: {
       label: '診断深度',
       options: [
-        { label: 'クイック診断', value: 'quick' },
+        { label: '簡易診断', value: 'quick' },
         { label: '標準診断', value: 'standard' },
         { label: '詳細診断', value: 'deep' },
-        { label: '改善版プロンプトのみ', value: 'optimizedOnly' },
+        { label: '改善版のみ', value: 'optimizedOnly' },
         { label: '厳格採点モード', value: 'strict' }
       ]
     },
@@ -118,6 +121,7 @@ export const ja: Dictionary = {
   footer: {
     difyTemplate: 'Dify Template · 準備中',
     documentation: 'Documentation',
+    localWebUi: 'ローカル Web UI',
     roadmap: 'Roadmap',
     lines: [
       'Dify Chatflow で構築された多言語プロンプト診断・改善ツール。',

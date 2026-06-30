@@ -34,7 +34,7 @@ export const examplePrompt: Record<Language, PromptFormState> = {
     prompt:
       'あなたは日本語作文の添削先生です。次の文章を自然な日本語に直し、主な修正点と次に注意すべきポイントを説明してください。',
     taskDescription: '日本語作文添削プロンプトの診断',
-    taskType: 'writing',
+    taskType: 'summary',
     context: '日本語学習者向け。学習者の意図を変えず、自然な表現に改善したい。',
     outputRequirements: 'Markdown レポート、スコア、改善版、拡張版プロンプトを出力。',
     reviewDepth: 'standard'

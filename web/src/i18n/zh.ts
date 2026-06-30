@@ -22,16 +22,19 @@ export const zh: Dictionary = {
       label: '任务类型',
       placeholder: '选择任务类型',
       customLabel: '自定义任务类型',
+      customPayloadPrefix: '用户自定义任务类型：',
       customPlaceholder: '填写你的任务类型',
       options: [
         { label: '通用任务', value: 'general' },
-        { label: '学习辅导', value: 'learning' },
-        { label: '写作润色', value: 'writing' },
         { label: '内容生成', value: 'content' },
-        { label: 'RAG / 知识库问答', value: 'rag' },
-        { label: '代码辅助', value: 'coding' },
+        { label: '总结改写', value: 'summary' },
+        { label: '信息提取', value: 'extraction' },
+        { label: '问答助手', value: 'qa' },
+        { label: '学习辅导', value: 'learning' },
+        { label: '编程辅助', value: 'coding' },
         { label: '数据分析', value: 'data' },
         { label: '翻译 / 多语言', value: 'translation' },
+        { label: 'RAG / 知识库问答', value: 'rag' },
         { label: '自定义', value: 'custom' }
       ]
     },
@@ -110,6 +113,7 @@ export const zh: Dictionary = {
   footer: {
     difyTemplate: 'Dify Template · 即将上线',
     documentation: 'Documentation',
+    localWebUi: 'Local Web UI',
     roadmap: 'Roadmap',
     lines: [
       '基于 Dify Chatflow 的多语言 Prompt 体检与优化工具。',

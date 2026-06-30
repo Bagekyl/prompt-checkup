@@ -22,16 +22,19 @@ export const en: Dictionary = {
       label: 'Task Type',
       placeholder: 'Select a task type',
       customLabel: 'Custom Task Type',
+      customPayloadPrefix: 'User custom task type:',
       customPlaceholder: 'Enter your custom task type',
       options: [
         { label: 'General Task', value: 'general' },
-        { label: 'Learning Support', value: 'learning' },
-        { label: 'Writing Polishing', value: 'writing' },
         { label: 'Content Generation', value: 'content' },
-        { label: 'RAG / Knowledge Base QA', value: 'rag' },
+        { label: 'Summary / Rewrite', value: 'summary' },
+        { label: 'Information Extraction', value: 'extraction' },
+        { label: 'QA Assistant', value: 'qa' },
+        { label: 'Learning Support', value: 'learning' },
         { label: 'Coding Assistance', value: 'coding' },
         { label: 'Data Analysis', value: 'data' },
         { label: 'Translation / Multilingual', value: 'translation' },
+        { label: 'RAG / Knowledge Base QA', value: 'rag' },
         { label: 'Custom', value: 'custom' }
       ]
     },
@@ -117,6 +120,7 @@ export const en: Dictionary = {
   footer: {
     difyTemplate: 'Dify Template · Coming soon',
     documentation: 'Documentation',
+    localWebUi: 'Local Web UI',
     roadmap: 'Roadmap',
     lines: [
       'A multilingual prompt diagnosis and optimization workflow built with Dify Chatflow.',
