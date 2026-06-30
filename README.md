@@ -2,25 +2,44 @@
 
 A multilingual prompt diagnosis and optimization workflow built with Dify Chatflow.
 
-PromptCheckup 是一个基于 Dify Chatflow 的多语言 Prompt 体检工具，支持结构预检、意图分流、任务分类、结构化诊断、风险评分、
-Prompt 优化、多轮追问调整和修改表单后的重新诊断。
+PromptCheckup is a Chinese-first, multilingual prompt diagnosis and optimization tool built with Dify Chatflow
+and a local Web UI.
+
+PromptCheckup 是一个基于 Dify Chatflow 的多语言 Prompt 体检工具，支持结构预检、意图分流、任务分类、
+结构化诊断、风险评分、Prompt 优化、多轮追问调整和修改表单后的重新诊断。
 
 中文名：Prompt 体检医生
 
+## Project Overview
+
+PromptCheckup v0.2.0 includes three parts:
+
+- Dify Chatflow template: `dify/prompt-checkup.yml`
+- Local React Web UI
+- Local Node Dify API wrapper
+
+The Web UI calls your local wrapper, and the wrapper calls your own Dify App API. PromptCheckup does not include
+model credits, hosted inference, a database, login, or cloud history.
+
 ## Features
 
-- 可导入的 Dify Chatflow DSL：`dify/prompt-checkup.yml`
-- 当前官方支持语言：Chinese / 中文、English、Japanese / 日本語
-- 结构预检：检查长度、角色、任务信号、输出格式、限制条件、示例和潜在注入风险
-- 意图分流：区分新诊断、追问调整和修改表单后的重新诊断
-- 任务分类：区分 `non_prompt`、`needs_context` 和 `diagnosable_prompt`
-- 完整诊断：输出评分、等级、风险级别、主要问题、优化版 Prompt 和增强版 Prompt
-- 风险封顶：对高风险或严重风险 Prompt 进行保守评分
-- 追问调整：支持基于上一轮结果进行压缩、改写、风格调整或补充
+- Importable Dify Chatflow template
+- Local React Web UI
+- Local Node Dify API wrapper
+- Real prompt diagnosis through the user's own Dify App API
+- Multi-turn follow-up adjustment
+- Re-diagnose current form
+- New session
+- Local draft persistence
+- Chinese / English / Japanese UI
+- Copy full report
+- Copy last answer
+- Download Markdown
+- API key kept on local backend, not in browser
 
 ## Architecture
 
-v0.1 是可复现的 Dify Chatflow 版本。核心流程如下：
+The Dify Chatflow core follows this path:
 
 ```text
 User Input
@@ -34,7 +53,17 @@ User Input
 -> Follow-up Adjustment
 ```
 
-详细说明见 [docs/architecture.md](docs/architecture.md) 和 [docs/nodes.md](docs/nodes.md)。
+The local v0.2 runtime adds:
+
+```text
+Browser Web UI
+-> Local /api/chat
+-> Local Node wrapper
+-> Dify App API /chat-messages
+```
+
+Detailed notes are in [docs/architecture.md](docs/architecture.md), [docs/web-ui.md](docs/web-ui.md),
+and [docs/local-wrapper.md](docs/local-wrapper.md).
 
 ## Screenshots
 
@@ -42,52 +71,83 @@ User Input
 
 ## Quick Start
 
-1. 准备一个可用的 Dify 环境。
-2. 导入 `dify/prompt-checkup.yml`。
-3. 在 Dify 中配置自己的模型供应商和 API Key。
-4. 运行示例测试用例，确认中文、英文、日文和追问调整分支表现正常。
+1. Clone this repository.
+2. Import `dify/prompt-checkup.yml` into Dify.
+3. Configure the model provider inside your own Dify workspace.
+4. Publish the Dify app.
+5. Create a Dify App API Key.
+6. Copy `.env.example` to `.env`.
+7. Fill the local environment variables:
 
-不要把任何 API Key、Dify App Key 或模型供应商密钥提交到 GitHub。
-真实配置请放在本地 `.env` 或 Dify 控制台中。
+```env
+DIFY_API_BASE_URL=https://api.dify.ai/v1
+DIFY_API_KEY=your_dify_app_api_key_here
+DIFY_USER=local-user
+SERVER_PORT=8787
+```
+
+8. Install dependencies and start the local app:
+
+```bash
+npm install
+npm run dev
+```
+
+9. Open:
+
+```text
+http://localhost:5173
+```
+
+You must use your own Dify App API Key. Model usage and cost are handled by your own Dify workspace and model
+provider configuration. Do not commit `.env`.
 
 ## Import into Dify
 
-在 Dify 控制台中创建或导入应用时，选择本仓库中的：
+In the Dify console, import:
 
 ```text
 dify/prompt-checkup.yml
 ```
 
-导入后需要自行检查并配置模型供应商，例如 Gemini、OpenAI 或其他 Dify 支持的模型提供方。
-导出的 Flow 不包含可公开使用的真实密钥。
+After import, check the model provider configuration and publish the app before using the local Web UI. The
+exported Flow does not contain a public API key.
+
+## Usage
+
+1. Fill the prompt diagnosis form.
+2. Click Start Diagnosis.
+3. Read the Markdown diagnosis report.
+4. Use follow-up messages to adjust the output.
+5. Use Re-diagnose current form after editing the form fields.
+6. Use Copy full report, Copy last answer, or Download Markdown.
+7. Start a New Session when you want to clear the conversation while keeping the form available.
 
 ## Test Cases
 
-测试说明见 [docs/test-cases.md](docs/test-cases.md)。示例输入放在 [examples/](examples/) 目录中，包括：
-
-- Chinese RAG high-risk test
-- English product feedback prompt test
-- Japanese writing correction prompt test
-- Casual incomplete input test
-- Non-prompt test
-- Follow-up adjustment test
-- Changed form re-diagnosis test
+Test notes are in [docs/test-cases.md](docs/test-cases.md). Example inputs are stored in [examples/](examples/).
 
 ## Roadmap
 
-- v0.1.0: Reproducible Dify Flow
-- v0.2.0: Web UI + Local Wrapper
-- v0.3.0: Expanded Multilingual Support
+See [docs/roadmap.md](docs/roadmap.md).
 
-当前版本不包含 Web UI。本地浏览器交互界面和本地 Dify API wrapper 计划在 v0.2 中实现。
-更多正式支持语言计划在 v0.3 中扩展。
+## Security
 
-## Safety Notes
+- `DIFY_API_KEY` is only read by the local backend.
+- The browser calls local `/api/chat`.
+- The frontend must not expose a Dify API Key.
+- `.env` is ignored by git.
+- Do not commit `.env`, Dify App API keys, model provider keys, or GitHub tokens.
 
-- 不要提交 `.env`、真实 API Key、Dify App Key 或模型供应商密钥。
-- 高风险任务应要求模型基于来源回答；无法确认时必须说明无法确认。
-- RAG、知识库问答、政策、价格、法律、医疗等场景必须避免伪造引用和无依据推测。
-- 优化 Prompt 时应使用清晰占位符，不应虚构用户没有提供的教材、章节、政策、价格、来源或引用。
+## Known Limitations
+
+- v0.2 does not provide dedicated optimized / advanced prompt copy buttons.
+- Dify currently returns optimized / advanced prompts as natural-language Markdown sections, not stable
+  machine-readable fields.
+- Dedicated optimized / advanced prompt copy can return after a future structured output version adds stable
+  fields or explicit Markdown markers.
+- Review-depth modes may not always produce strongly differentiated results until the Dify Flow prompt logic is
+  upgraded.
 
 ## License
 

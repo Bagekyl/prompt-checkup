@@ -1,6 +1,6 @@
 # Test Cases
 
-These test cases describe the expected behavior for v0.1.
+These test cases describe the expected behavior for the Dify Flow and the v0.2.0 local Web UI.
 Example inputs are stored in `examples/`.
 
 ## 1. Chinese RAG high-risk test
@@ -131,4 +131,107 @@ uses updated form fields
 may enter diagnosable_prompt
 full structured diagnosis when input is sufficient
 new final report
+```
+
+## 8. v0.2 Web UI regression checklist
+
+Run these checks before preparing a v0.2 release.
+
+### Health check
+
+Expected:
+
+```text
+GET /api/health returns ok = true
+configured does not expose the Dify API key
+```
+
+### Chinese diagnosis
+
+Expected:
+
+```text
+Start Diagnosis calls local /api/chat
+main report renders real Dify Markdown
+conversation_id is saved
+```
+
+### English UI with canonical payload
+
+Expected:
+
+```text
+UI labels are English
+task_type and review_depth submitted to Dify use canonical Chinese values
+no Dify 400 caused by localized labels
+```
+
+### Japanese UI with canonical payload
+
+Expected:
+
+```text
+UI labels are Japanese
+task_type and review_depth submitted to Dify use canonical Chinese values
+no Dify 400 caused by localized labels
+```
+
+### Follow-up
+
+Expected:
+
+```text
+follow-up reuses conversation_id
+user message and assistant reply are appended to history
+main report is not replaced by an ordinary follow-up reply
+```
+
+### Re-diagnose current form
+
+Expected:
+
+```text
+uses current form fields
+preserves conversation_id
+updates main report when the new diagnosis returns
+```
+
+### New Session
+
+Expected:
+
+```text
+clears conversation_id, message history, and current report
+preserves form inputs
+```
+
+### localStorage draft
+
+Expected:
+
+```text
+form fields and UI language restore after refresh
+Clear Form removes the local form draft
+New Session does not remove the form draft
+```
+
+### Report actions
+
+Expected:
+
+```text
+Copy full report works
+Copy last answer works
+Download Markdown works
+Dedicated optimized / advanced prompt copy actions are not present in v0.2
+```
+
+### Network safety
+
+Expected:
+
+```text
+browser calls local /api/chat
+browser does not call Dify directly
+browser network panel does not expose DIFY_API_KEY or Authorization Bearer Dify key
 ```

@@ -40,7 +40,11 @@ The score calculation node applies a cap when risk severity is high or critical.
 
 The final report prompt turns existing diagnosis and score fields into Markdown.
 It must not redo diagnosis, recalculate scores, or execute the evaluated prompt.
-Optimized and enhanced prompts are placed in separate code blocks so users can copy them easily.
+Optimized and enhanced prompts should be easy to read inside the final report.
+In v0.2, the Web UI treats the returned Markdown as the source of truth and exposes stable actions only:
+copy the full report, copy the latest assistant answer, and download Markdown.
+Dedicated optimized/advanced prompt copy buttons are deferred until the Dify output contract provides stable
+structured fields or explicit Markdown markers.
 
 ## Follow-up Adjustment
 
