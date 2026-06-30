@@ -1,5 +1,7 @@
 # PromptCheckup
 
+[![CI](https://github.com/Bagekyl/prompt-checkup/actions/workflows/ci.yml/badge.svg)](https://github.com/Bagekyl/prompt-checkup/actions/workflows/ci.yml)
+
 A multilingual prompt diagnosis and optimization workflow built with Dify Chatflow.
 
 PromptCheckup is a Chinese-first, multilingual prompt diagnosis and optimization tool built with Dify Chatflow
@@ -12,7 +14,7 @@ PromptCheckup 是一个基于 Dify Chatflow 的多语言 Prompt 体检工具，�
 
 ## Project Overview
 
-PromptCheckup v0.2.0 includes three parts:
+PromptCheckup v0.2.1 includes three parts:
 
 - Dify Chatflow template: `dify/prompt-checkup.yml`
 - Local React Web UI
@@ -20,6 +22,9 @@ PromptCheckup v0.2.0 includes three parts:
 
 The Web UI calls your local wrapper, and the wrapper calls your own Dify App API. PromptCheckup does not include
 model credits, hosted inference, a database, login, or cloud history.
+
+v0.2.1 adds GitHub Actions CI for `npm ci`, `npm run build`, and `npm audit --omit=dev`.
+Runtime features are unchanged from v0.2.0.
 
 ## Features
 

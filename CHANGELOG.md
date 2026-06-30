@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.2.1 - CI Setup
+
+### Added
+
+- Added GitHub Actions CI workflow.
+- CI now runs `npm ci`, `npm run build`, and `npm audit --omit=dev` on pull requests and pushes to `main`.
+- Added CI status badge to README.
+
+### Changed
+
+- Updated project version display to `v0.2.1`.
+
+### Notes
+
+- This release does not change PromptCheckup runtime features.
+
 ## v0.2.0 - Local Web UI
 
 ### Added

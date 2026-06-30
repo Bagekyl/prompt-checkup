@@ -34,7 +34,20 @@ Out of scope:
 - Docker / production deployment
 - Desktop app
 
-## v0.3.0 - Structured Dify Output
+## v0.2.1 - CI Setup
+
+- Add GitHub Actions CI
+- Run build and production dependency audit on pull requests and pushes to `main`
+- Improve repository maintainability before the Vercel demo deployment work
+
+## v0.3.0 - Vercel Demo Deployment
+
+- Prepare a hosted demo deployment path for the Web UI
+- Keep Dify API keys server-side
+- Document environment variable setup for hosted demo usage
+- Keep local development workflow available
+
+## v0.4.0 - Structured Dify Output
 
 - Improve the Dify Flow output contract
 - Add stable structured fields or explicit Markdown markers for `optimized_prompt` and `advanced_prompt`
@@ -43,7 +56,7 @@ Out of scope:
 - Improve consistency of Chinese, English, and Japanese report sections
 - Ensure optimized / advanced prompts are wrapped consistently in fenced code blocks or structured fields
 
-## v0.4.0 - Report Reading Experience
+## v0.5.0 - Report Reading Experience
 
 - Improve report section layout
 - Add score / risk / severity badges
@@ -51,15 +64,15 @@ Out of scope:
 - Add collapsible report sections
 - Improve Markdown export formatting
 
-## v0.5.0 - Deployment and Reproducibility
+## v0.6.0 - Deployment and Reproducibility
 
 - Add clearer setup and troubleshooting guides
 - Add environment validation
 - Improve Dify API error messages
-- Add Docker / Docker Compose support
-- Provide production build instructions
+- Add production build instructions
+- Keep deployment guidance focused on secure API key handling
 
-## v0.6.0 - Multilingual Expansion
+## v0.7.0 - Multilingual Expansion
 
 - Improve i18n architecture
 - Add more UI languages
@@ -67,7 +80,7 @@ Out of scope:
 - Standardize UI language vs report output language behavior
 - Improve Dify Flow language-control prompts
 
-## v0.7.0 - Prompt Workspace
+## v0.8.0 - Prompt Workspace
 
 - Add local diagnosis history
 - Add saved prompt templates
