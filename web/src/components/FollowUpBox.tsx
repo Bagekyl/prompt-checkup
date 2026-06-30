@@ -145,7 +145,7 @@ function MessageBubble({ message, streaming }: { message: ChatMessage; streaming
 
   if (message.role === 'user') {
     return (
-      <div className="ml-auto max-w-[88%] rounded-3xl bg-lavender-600 px-4 py-3 text-sm leading-6 text-white">
+      <div className="ml-auto max-w-[78%] whitespace-pre-wrap break-words rounded-3xl bg-lavender-600 px-4 py-3 text-left text-sm leading-6 text-white shadow-sm shadow-lavender-200/50 max-sm:max-w-[86%]">
         {message.content}
       </div>
     );

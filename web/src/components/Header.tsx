@@ -1,6 +1,7 @@
 import { Github } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
 import type { Dictionary, Language } from '../i18n';
+import { APP_VERSION } from '../lib/version';
 
 type HeaderProps = {
   language: Language;
@@ -18,7 +19,12 @@ export default function Header({ language, onLanguageChange, t }: HeaderProps) {
               🩺
             </div>
             <div>
-              <p className="text-xl font-semibold tracking-tight text-slate-950">PromptCheckup</p>
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="text-xl font-semibold tracking-tight text-slate-950">PromptCheckup</p>
+                <span className="rounded-full border border-lavender-200 bg-lavender-50 px-2.5 py-0.5 text-xs font-semibold text-lavender-700">
+                  {APP_VERSION}
+                </span>
+              </div>
               <p className="mt-0.5 text-sm text-slate-500">{t.header.subtitle}</p>
             </div>
           </div>

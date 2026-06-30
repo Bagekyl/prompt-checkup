@@ -1,6 +1,7 @@
 import { BookOpen, Github, Map } from 'lucide-react';
 import type { ReactNode } from 'react';
 import type { Dictionary } from '../i18n';
+import { APP_VERSION } from '../lib/version';
 
 type FooterProps = {
   t: Dictionary;
@@ -12,6 +13,9 @@ export default function Footer({ t }: FooterProps) {
       <div className="grid gap-6 lg:grid-cols-[1.2fr_auto] lg:items-end">
         <div className="space-y-3">
           <p className="text-lg font-semibold text-slate-950">PromptCheckup</p>
+          <p className="text-sm font-semibold text-lavender-700">
+            PromptCheckup {APP_VERSION} · {t.footer.localWebUi}
+          </p>
           {t.footer.lines.map((line) => (
             <p className="max-w-4xl text-sm leading-6 text-slate-500" key={line}>
               {line}
