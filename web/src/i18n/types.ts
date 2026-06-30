@@ -12,9 +12,14 @@ export type Dictionary = {
   followUp: {
     conversation: string;
     description: string;
+    errorTitle: string;
+    historyTitle: string;
+    loading: string;
     newSession: string;
+    noConversation: string;
     placeholder: string;
     quickActions: string[];
+    reDiagnoseQuery: string;
     send: string;
     title: string;
   };
@@ -85,6 +90,8 @@ export type Dictionary = {
     cleared: string;
     copied: string;
     downloaded: string;
+    draftRestored: string;
+    draftSaved: string;
     exampleFilled: string;
     newSession: string;
     noReport: string;

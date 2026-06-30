@@ -68,8 +68,8 @@ export const zh: Dictionary = {
     loadingTitle: '正在生成诊断...',
     loadingDescription: '本地 wrapper 正在调用 Dify Chatflow，并等待诊断报告返回。',
     errorTitle: '诊断请求失败',
-    errorDescription: 'Dify 请求失败。请检查 API Key、模型供应商配置或网络状态。',
-    difyErrorHint: 'Dify 请求失败。请检查 API Key、模型供应商配置或网络状态。',
+    errorDescription: '请求失败。请检查 Dify API Key、模型供应商配置或网络状态。',
+    difyErrorHint: '请求失败。请检查 Dify API Key、模型供应商配置或网络状态。',
     badges: {
       mock: '模拟报告',
       live: '真实报告',
@@ -86,12 +86,17 @@ export const zh: Dictionary = {
   },
   followUp: {
     title: '追问调整',
-    description: '模拟对上一轮增强版 Prompt 的压缩、改写或重新诊断请求。',
+    description: '基于当前会话继续追问、调整上一轮报告，或按当前表单重新诊断。',
     placeholder: '例如：把增强版压缩到 300 字以内',
     conversation: '当前会话',
     newSession: '新会话',
     send: '发送',
-    quickActions: ['缩短增强版 Prompt', '改得更严格', '改成英文', '改成日文', '重新诊断当前表单']
+    loading: '正在发送追问...',
+    errorTitle: '追问请求失败',
+    historyTitle: '多轮消息历史',
+    noConversation: '请先运行一次诊断，再进行追问。',
+    reDiagnoseQuery: '我已经修改了表单内容，请根据当前表单重新进行完整诊断。',
+    quickActions: ['缩短增强版 Prompt', '改得更严格', '改成英文', '改成日文', '只保留优化版', '根据当前表单重新诊断']
   },
   mockControls: {
     label: '开发者预览工具',
@@ -117,10 +122,12 @@ export const zh: Dictionary = {
   toast: {
     copied: '已复制到剪贴板',
     downloaded: 'Markdown 已下载',
+    draftRestored: '已恢复本地表单草稿',
+    draftSaved: '表单草稿已自动保存。',
     cleared: '表单已清空',
     exampleFilled: '示例已填入',
     advancedNotFound: '当前报告中未找到可复制的增强版 Prompt。',
-    newSession: '已开始新会话',
+    newSession: '新会话已开始。表单内容已保留。',
     noReport: '当前没有可复制的报告',
     optimizedNotFound: '当前报告中未找到可复制的优化版 Prompt。',
     reportCleared: '报告已清空'

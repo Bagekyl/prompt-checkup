@@ -69,8 +69,8 @@ export const ja: Dictionary = {
     loadingTitle: '診断レポートを生成中...',
     loadingDescription: 'ローカルラッパーがあなたの Dify Chatflow を呼び出し、レポートの返却を待っています。',
     errorTitle: '診断リクエストに失敗しました',
-    errorDescription: 'Dify リクエストに失敗しました。API キー、モデルプロバイダー設定、またはネットワーク状態を確認してください。',
-    difyErrorHint: 'Dify リクエストに失敗しました。API キー、モデルプロバイダー設定、またはネットワーク状態を確認してください。',
+    errorDescription: 'リクエストに失敗しました。Dify API キー、モデルプロバイダー設定、またはネットワーク状態を確認してください。',
+    difyErrorHint: 'リクエストに失敗しました。Dify API キー、モデルプロバイダー設定、またはネットワーク状態を確認してください。',
     badges: {
       mock: 'モックレポート',
       live: '診断レポート',
@@ -87,17 +87,23 @@ export const ja: Dictionary = {
   },
   followUp: {
     title: '追加調整',
-    description: '前回の拡張版プロンプトを短縮、書き換え、再診断する mock 入力です。',
+    description: '現在の会話を続けて、最新レポートの調整や現在のフォームでの再診断を行います。',
     placeholder: '例：拡張版プロンプトを 300 字以内に短縮',
     conversation: '現在のセッション',
     newSession: '新しいセッション',
     send: '送信',
+    loading: '追加指示を送信中...',
+    errorTitle: '追加指示の送信に失敗しました',
+    historyTitle: '多輪メッセージ履歴',
+    noConversation: '先に診断を実行してから追加指示を送信してください。',
+    reDiagnoseQuery: 'フォーム内容を更新しました。現在のフォーム入力に基づいて、もう一度完全な診断を行ってください。',
     quickActions: [
-      '拡張版プロンプトを短くする',
+      '強化版プロンプトを短くする',
       'より厳格にする',
-      '英語にする',
-      '日本語にする',
-      '現在のフォームを再診断'
+      '英語に書き換える',
+      '日本語に書き換える',
+      '改善版プロンプトのみ残す',
+      '現在のフォームで再診断する'
     ]
   },
   mockControls: {
@@ -124,10 +130,12 @@ export const ja: Dictionary = {
   toast: {
     copied: 'クリップボードにコピーしました',
     downloaded: 'Markdown を保存しました',
+    draftRestored: 'ローカルの下書きを復元しました',
+    draftSaved: '下書きはローカルに保存されました。',
     cleared: 'フォームをクリアしました',
     exampleFilled: 'サンプルを入力しました',
     advancedNotFound: '現在のレポート内にコピー可能な強化版プロンプトが見つかりませんでした。',
-    newSession: '新しいセッションを開始しました',
+    newSession: '新しいセッションを開始しました。フォーム内容は保持されています。',
     noReport: 'コピーできるレポートはまだありません',
     optimizedNotFound: '現在のレポート内にコピー可能な改善版プロンプトが見つかりませんでした。',
     reportCleared: 'レポートをクリアしました'

@@ -68,8 +68,8 @@ export const en: Dictionary = {
     loadingTitle: 'Generating diagnosis...',
     loadingDescription: 'The local wrapper is calling your Dify Chatflow and waiting for the report.',
     errorTitle: 'Diagnosis request failed',
-    errorDescription: 'Dify request failed. Please check your API key, model provider configuration, or network connection.',
-    difyErrorHint: 'Dify request failed. Please check your API key, model provider configuration, or network connection.',
+    errorDescription: 'Request failed. Please check your Dify API key, model provider configuration, or network connection.',
+    difyErrorHint: 'Request failed. Please check your Dify API key, model provider configuration, or network connection.',
     badges: {
       mock: 'MOCK REPORT',
       live: 'LIVE REPORT',
@@ -86,16 +86,22 @@ export const en: Dictionary = {
   },
   followUp: {
     title: 'Follow-up Adjustment',
-    description: 'Mock a second-turn request to compress, rewrite, or re-diagnose the previous result.',
+    description: 'Continue the current session, adjust the latest report, or re-diagnose the current form.',
     placeholder: 'Example: compress the advanced prompt to 300 words',
     conversation: 'Current session',
     newSession: 'New Session',
     send: 'Send',
+    loading: 'Sending follow-up...',
+    errorTitle: 'Follow-up request failed',
+    historyTitle: 'Multi-turn message history',
+    noConversation: 'Run a diagnosis first before sending a follow-up.',
+    reDiagnoseQuery: 'I have updated the form. Please run a new full diagnosis based on the current form inputs.',
     quickActions: [
       'Shorten the advanced prompt',
       'Make it stricter',
-      'Rewrite in English',
-      'Rewrite in Japanese',
+      'Rewrite it in English',
+      'Rewrite it in Japanese',
+      'Keep only the optimized prompt',
       'Re-diagnose current form'
     ]
   },
@@ -123,10 +129,12 @@ export const en: Dictionary = {
   toast: {
     copied: 'Copied to clipboard',
     downloaded: 'Markdown downloaded',
+    draftRestored: 'Local form draft restored',
+    draftSaved: 'Draft saved locally.',
     cleared: 'Form cleared',
     exampleFilled: 'Example filled',
     advancedNotFound: 'Could not find an advanced prompt block in the current report.',
-    newSession: 'New session started',
+    newSession: 'New session started. Form inputs are preserved.',
     noReport: 'There is no report to copy yet',
     optimizedNotFound: 'Could not find an optimized prompt block in the current report.',
     reportCleared: 'Report cleared'
