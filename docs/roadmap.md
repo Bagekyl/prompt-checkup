@@ -43,6 +43,10 @@ Out of scope:
 ## v0.3.0 - Vercel Demo Deployment
 
 - Prepare a hosted demo deployment path for the Web UI
+- Add Vercel API Functions for `/api/health` and `/api/chat`
+- Add access-code protected demo sharing
+- Add input length limits for public demo safety
+- Add Vercel deployment guide and safe sharing notes
 - Keep Dify API keys server-side
 - Document environment variable setup for hosted demo usage
 - Keep local development workflow available

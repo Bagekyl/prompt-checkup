@@ -26,11 +26,15 @@ model credits, hosted inference, a database, login, or cloud history.
 v0.2.1 adds GitHub Actions CI for `npm ci`, `npm run build`, and `npm audit --omit=dev`.
 Runtime features are unchanged from v0.2.0.
 
+The v0.3 branch adds Vercel demo deployment support with Vercel API Functions, a demo access code, and input
+length limits. See [docs/vercel-deployment.md](docs/vercel-deployment.md).
+
 ## Features
 
 - Importable Dify Chatflow template
 - Local React Web UI
 - Local Node Dify API wrapper
+- Vercel API Functions for hosted demos
 - Real prompt diagnosis through the user's own Dify App API
 - Multi-turn follow-up adjustment
 - Re-diagnose current form
@@ -41,6 +45,7 @@ Runtime features are unchanged from v0.2.0.
 - Copy last answer
 - Download Markdown
 - API key kept on local backend, not in browser
+- Demo access code support for hosted Vercel sharing
 
 ## Architecture
 
@@ -89,6 +94,7 @@ DIFY_API_BASE_URL=https://api.dify.ai/v1
 DIFY_API_KEY=your_dify_app_api_key_here
 DIFY_USER=local-user
 SERVER_PORT=8787
+DEMO_ACCESS_CODE=change_me_for_public_demo
 ```
 
 8. Install dependencies and start the local app:
@@ -135,6 +141,7 @@ Test notes are in [docs/test-cases.md](docs/test-cases.md). Example inputs are s
 ## Roadmap
 
 See [docs/roadmap.md](docs/roadmap.md).
+Vercel deployment notes are in [docs/vercel-deployment.md](docs/vercel-deployment.md).
 
 ## Security
 

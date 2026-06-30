@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Added Vercel API Functions for `/api/chat` and `/api/health`.
+- Added demo access code support for protected sharing.
+- Added input length validation for public demo safety.
+- Added Vercel deployment documentation.
+
 ## v0.2.1 - CI Setup
 
 ### Added
