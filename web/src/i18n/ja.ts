@@ -79,6 +79,22 @@ export const ja: Dictionary = {
     loadingDescription: 'ローカルラッパーがあなたの Dify Chatflow を呼び出し、レポートの返却を待っています。',
     errorTitle: '診断リクエストに失敗しました',
     errorDescription: 'リクエストに失敗しました。Dify API キー、モデルプロバイダー設定、またはネットワーク状態を確認してください。',
+    errorStatusLabel: 'ステータス',
+    errorHintLabel: 'ヒント',
+    errors: {
+      accessCodeTitle: 'アクセスコードが無効または未入力です',
+      accessCodeDescription: '正しいデモアクセスコードを入力してから再試行してください。',
+      inputTooLongTitle: '入力内容が長すぎます',
+      inputTooLongDescription: '診断対象プロンプト、背景情報、または出力要件を短くしてから再試行してください。',
+      networkTitle: 'ネットワークリクエストに失敗しました',
+      networkDescription: 'ネットワーク接続を確認するか、後でもう一度お試しください。',
+      serverConfigTitle: 'サーバー設定が不完全です',
+      serverConfigDescription: 'Dify API Key が設定されていません。Vercel Environment Variables を確認してください。',
+      timeoutTitle: '診断リクエストがタイムアウトしました',
+      timeoutDescription: 'Dify Chatflow または上流モデルの応答に時間がかかりすぎています。',
+      timeoutHint: '複雑なレポートは blocking mode では時間がかかる場合があります。Prompt を短くする、軽い診断モードを使う、または後でもう一度お試しください。',
+      unknownTitle: '診断リクエストに失敗しました'
+    },
     difyErrorHint: 'リクエストに失敗しました。Dify API キー、モデルプロバイダー設定、またはネットワーク状態を確認してください。',
     badges: {
       mock: 'モックレポート',

@@ -24,14 +24,18 @@ export type LocalChatResponse = {
 };
 
 export class LocalApiError extends Error {
+  field?: string;
   hint?: string;
+  limit?: number;
   status?: number;
 
-  constructor(message: string, status?: number, hint?: string) {
+  constructor(message: string, status?: number, hint?: string, field?: string, limit?: number) {
     super(message);
     this.name = 'LocalApiError';
     this.status = status;
     this.hint = hint;
+    this.field = field;
+    this.limit = limit;
   }
 }
 
@@ -59,7 +63,7 @@ export async function sendLocalChatMessageWithOptions(
 
   if (!response.ok) {
     const error = await safeJson(response);
-    throw new LocalApiError(getErrorMessage(error), response.status, getErrorHint(error));
+    throw new LocalApiError(getErrorMessage(error), response.status, getErrorHint(error), getErrorField(error), getErrorLimit(error));
   }
 
   return response.json() as Promise<LocalChatResponse>;
@@ -88,6 +92,22 @@ function getErrorMessage(error: unknown) {
 function getErrorHint(error: unknown) {
   if (error && typeof error === 'object' && 'hint' in error && typeof error.hint === 'string') {
     return error.hint;
+  }
+
+  return undefined;
+}
+
+function getErrorField(error: unknown) {
+  if (error && typeof error === 'object' && 'field' in error && typeof error.field === 'string') {
+    return error.field;
+  }
+
+  return undefined;
+}
+
+function getErrorLimit(error: unknown) {
+  if (error && typeof error === 'object' && 'limit' in error && typeof error.limit === 'number') {
+    return error.limit;
   }
 
   return undefined;

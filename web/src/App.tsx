@@ -6,7 +6,8 @@ import MockControls, { type ReportStatus } from './components/MockControls';
 import PromptForm, { type PromptFormState } from './components/PromptForm';
 import ReportPanel, { type ReportContent } from './components/ReportPanel';
 import { dictionaries, type Language } from './i18n';
-import { LocalApiError, sendLocalChatMessageWithOptions } from './lib/apiClient';
+import { sendLocalChatMessageWithOptions } from './lib/apiClient';
+import { formatReportErrorDetails, getReportErrorDetails, type ReportErrorDetails } from './lib/errorDisplay';
 import { examplePrompt, mockReports } from './lib/mockReport';
 
 const accessCodeKey = 'promptcheckup.demoAccessCode';
@@ -30,7 +31,7 @@ export default function App() {
   const [activeReport, setActiveReport] = useState<ReportContent | null>(null);
   const [conversationId, setConversationId] = useState('');
   const [lastMessageId, setLastMessageId] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorDetails, setErrorDetails] = useState<ReportErrorDetails | null>(null);
   const [followUpError, setFollowUpError] = useState('');
   const [followUpLoading, setFollowUpLoading] = useState(false);
   const [demoAccessCode, setDemoAccessCode] = useState(() => loadStoredAccessCode());
@@ -69,7 +70,7 @@ export default function App() {
 
   const showMockReport = () => {
     setActiveReport({ ...mockReport, kind: 'mock' });
-    setErrorMessage('');
+    setErrorDetails(null);
     setFollowUpError('');
     setStatus('loading');
     window.setTimeout(() => setStatus('report'), 900);
@@ -79,14 +80,17 @@ export default function App() {
     const promptText = form.prompt.trim();
 
     if (!promptText) {
-      setErrorMessage(t.form.promptRequired);
+      setErrorDetails({
+        description: t.form.promptRequired,
+        title: t.report.errorTitle
+      });
       setStatus('error');
       showToast(t.form.promptRequired);
       return;
     }
 
     setStatus('loading');
-    setErrorMessage('');
+    setErrorDetails(null);
     setFollowUpError('');
 
     try {
@@ -106,7 +110,7 @@ export default function App() {
       appendAssistantMessage(response.answer, 'diagnosis');
       setStatus('report');
     } catch (error) {
-      setErrorMessage(getReadableErrorMessage(error, t));
+      setErrorDetails(getReportErrorDetails(error, t));
       setStatus('error');
     }
   };
@@ -126,12 +130,15 @@ export default function App() {
   const clearReport = () => {
     setStatus('empty');
     setActiveReport(null);
-    setErrorMessage('');
+    setErrorDetails(null);
     showToast(t.toast.reportCleared);
   };
 
   const setMockError = () => {
-    setErrorMessage(t.report.errorDescription);
+    setErrorDetails({
+      description: t.report.errorDescription,
+      title: t.report.errorTitle
+    });
     setStatus('error');
   };
 
@@ -141,7 +148,7 @@ export default function App() {
     setMessages([]);
     setActiveReport(null);
     setStatus('empty');
-    setErrorMessage('');
+    setErrorDetails(null);
     setFollowUpError('');
     setStreamingMessageId('');
     showToast(t.toast.newSession);
@@ -230,7 +237,7 @@ export default function App() {
           <section className="flex min-w-0 flex-col gap-4">
             <MockControls onClear={clearReport} onError={setMockError} onMockReport={showMockReport} t={t} />
             <ReportPanel
-              errorMessage={errorMessage}
+              errorDetails={errorDetails}
               latestAssistantAnswer={latestAssistantAnswer}
               report={activeReport}
               showToast={showToast}
@@ -403,24 +410,5 @@ function getTaskDescriptionPayload(form: PromptFormState, t: (typeof dictionarie
 }
 
 function getReadableErrorMessage(error: unknown, t: (typeof dictionaries)['zh']) {
-  if (error instanceof LocalApiError) {
-    const parts = [error.message || 'Local chat request failed'];
-    if (error.status) {
-      parts.push(`Status: ${error.status}`);
-    }
-    if (error.hint) {
-      parts.push(error.hint);
-      return parts.join(' ');
-    }
-    if (!/not configured/i.test(error.message)) {
-      parts.push(t.report.difyErrorHint);
-    }
-    return parts.join(' ');
-  }
-
-  if (error instanceof Error && error.message) {
-    return `${error.message} ${t.report.difyErrorHint}`;
-  }
-
-  return `Network error. ${t.report.difyErrorHint}`;
+  return formatReportErrorDetails(getReportErrorDetails(error, t), t);
 }
