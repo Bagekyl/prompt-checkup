@@ -35,6 +35,8 @@ app.post('/api/chat', async (request, response) => {
     if (error instanceof DifyClientError) {
       response.status(error.status).json({
         error: error.message,
+        status: error.status,
+        ...(error.hint ? { hint: error.hint } : {}),
         ...(error.details ? { details: error.details } : {})
       });
       return;

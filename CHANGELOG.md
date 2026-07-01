@@ -9,6 +9,16 @@
 - Added input length validation for public demo safety.
 - Added Vercel deployment documentation.
 
+### Changed
+
+- Added Vercel Function max duration configuration for `/api/chat`.
+- Improved timeout messaging for long-running Dify blocking requests.
+- Documented blocking-mode timeout limitations for the Vercel demo.
+
+### Notes
+
+- Streaming response support and Dify Flow performance optimization are planned for future versions.
+
 ## v0.2.1 - CI Setup
 
 ### Added

@@ -1,5 +1,10 @@
 {
   "buildCommand": "npm run build --workspace web",
   "framework": "vite",
+  "functions": {
+    "api/chat.ts": {
+      "maxDuration": 60
+    }
+  },
   "outputDirectory": "web/dist"
 }

@@ -408,6 +408,10 @@ function getReadableErrorMessage(error: unknown, t: (typeof dictionaries)['zh'])
     if (error.status) {
       parts.push(`Status: ${error.status}`);
     }
+    if (error.hint) {
+      parts.push(error.hint);
+      return parts.join(' ');
+    }
     if (!/not configured/i.test(error.message)) {
       parts.push(t.report.difyErrorHint);
     }

@@ -24,12 +24,14 @@ export type LocalChatResponse = {
 };
 
 export class LocalApiError extends Error {
+  hint?: string;
   status?: number;
 
-  constructor(message: string, status?: number) {
+  constructor(message: string, status?: number, hint?: string) {
     super(message);
     this.name = 'LocalApiError';
     this.status = status;
+    this.hint = hint;
   }
 }
 
@@ -57,7 +59,7 @@ export async function sendLocalChatMessageWithOptions(
 
   if (!response.ok) {
     const error = await safeJson(response);
-    throw new LocalApiError(getErrorMessage(error), response.status);
+    throw new LocalApiError(getErrorMessage(error), response.status, getErrorHint(error));
   }
 
   return response.json() as Promise<LocalChatResponse>;
@@ -81,4 +83,12 @@ function getErrorMessage(error: unknown) {
   }
 
   return 'Local chat request failed';
+}
+
+function getErrorHint(error: unknown) {
+  if (error && typeof error === 'object' && 'hint' in error && typeof error.hint === 'string') {
+    return error.hint;
+  }
+
+  return undefined;
 }

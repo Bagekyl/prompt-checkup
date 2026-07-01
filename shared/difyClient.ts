@@ -12,13 +12,15 @@ type DifyChatResponse = {
 
 export class DifyClientError extends Error {
   details?: unknown;
+  hint?: string;
   status: number;
 
-  constructor(message: string, status = 500, details?: unknown) {
+  constructor(message: string, status = 500, details?: unknown, hint?: string) {
     super(message);
     this.name = 'DifyClientError';
     this.status = status;
     this.details = details;
+    this.hint = hint;
   }
 }
 
@@ -39,18 +41,29 @@ export async function sendChatMessage(request: ValidatedChatRequest, config: Dif
     ...(request.conversation_id ? { conversation_id: request.conversation_id } : {})
   };
 
-  const response = await fetch(`${stripTrailingSlash(config.apiBaseUrl)}/chat-messages`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${config.apiKey}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(payload)
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${stripTrailingSlash(config.apiBaseUrl)}/chat-messages`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${config.apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+  } catch (error) {
+    if (isTimeoutLikeError(error)) {
+      throw createDifyTimeoutError();
+    }
+    throw error;
+  }
 
   const data = await safeJson(response);
 
   if (!response.ok) {
+    if (response.status === 504) {
+      throw createDifyTimeoutError(sanitizeDifyError(data));
+    }
     throw new DifyClientError('Dify chat request failed', response.status, sanitizeDifyError(data));
   }
 
@@ -89,4 +102,22 @@ function sanitizeDifyError(data: unknown) {
     message: record.message,
     status: record.status
   };
+}
+
+function createDifyTimeoutError(details?: unknown) {
+  return new DifyClientError(
+    'Dify request timed out or the upstream model took too long to respond.',
+    504,
+    details,
+    'Complex Chatflow reports may take too long in blocking mode. Try a shorter prompt, a lighter review mode, or retry later.'
+  );
+}
+
+function isTimeoutLikeError(error: unknown) {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+
+  const message = error.message.toLowerCase();
+  return error.name === 'AbortError' || error.name === 'TimeoutError' || message.includes('timeout') || message.includes('timed out');
 }

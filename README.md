@@ -28,6 +28,8 @@ Runtime features are unchanged from v0.2.0.
 
 The v0.3 branch adds Vercel demo deployment support with Vercel API Functions, a demo access code, and input
 length limits. See [docs/vercel-deployment.md](docs/vercel-deployment.md).
+The initial Vercel demo uses the Dify Chat API in blocking mode, so complex reports can take a long time and may
+hit upstream or serverless timeout limits.
 
 ## Features
 
@@ -150,6 +152,8 @@ Vercel deployment notes are in [docs/vercel-deployment.md](docs/vercel-deploymen
 - The frontend must not expose a Dify API Key.
 - `.env` is ignored by git.
 - Do not commit `.env`, Dify App API keys, model provider keys, or GitHub tokens.
+- The Vercel demo access code is lightweight protection for preview sharing, not full authentication, per-user
+  quota, or billing.
 
 ## Known Limitations
 
@@ -160,6 +164,9 @@ Vercel deployment notes are in [docs/vercel-deployment.md](docs/vercel-deploymen
   fields or explicit Markdown markers.
 - Review-depth modes may not always produce strongly differentiated results until the Dify Flow prompt logic is
   upgraded.
+- v0.3 Vercel demos initially use Dify blocking mode. Complex reports may time out; retry with a shorter prompt,
+  a lighter review mode, or try again later.
+- Streaming responses and Dify Flow performance optimization are planned future improvements.
 
 ## License
 

@@ -58,7 +58,13 @@ Do not commit real environment values to GitHub.
 
 ## Known Limitations
 
-- Access code is lightweight protection, not full authentication.
+- v0.3 uses the Dify Chat API in blocking mode for the initial Vercel demo deployment.
+- Complex or long Dify Chatflow reports may take a long time to start generating and can hit upstream or serverless timeout limits.
+- If `/api/chat` returns 504, the request may have timed out while waiting for Dify or the configured model provider.
+- Try a shorter prompt, a lighter review mode, or retry later.
+- Streaming response support is planned for a later version.
+- Dify Flow performance optimization is planned separately and may include fewer LLM nodes, shorter default reports, structured output, or a dedicated fast demo mode.
+- The demo access code is lightweight protection, not full authentication.
 - There is no per-user quota.
 - There is no database logging.
 - There is no payment or usage billing.
