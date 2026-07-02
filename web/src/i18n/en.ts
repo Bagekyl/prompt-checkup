@@ -140,7 +140,7 @@ export const en: Dictionary = {
   footer: {
     difyTemplate: 'Dify Template · Coming soon',
     documentation: 'Documentation',
-    localWebUi: 'Local Web UI',
+    localWebUi: 'Vercel Demo Deployment',
     roadmap: 'Roadmap',
     lines: [
       'A multilingual prompt diagnosis and optimization workflow built with Dify Chatflow.',

@@ -14,22 +14,21 @@ PromptCheckup 是一个基于 Dify Chatflow 的多语言 Prompt 体检工具，�
 
 ## Project Overview
 
-PromptCheckup v0.2.1 includes three parts:
+PromptCheckup v0.3.0 includes four parts:
 
 - Dify Chatflow template: `dify/prompt-checkup.yml`
 - Local React Web UI
 - Local Node Dify API wrapper
+- Vercel API Functions for hosted demo deployment
 
-The Web UI calls your local wrapper, and the wrapper calls your own Dify App API. PromptCheckup does not include
-model credits, hosted inference, a database, login, or cloud history.
+The Web UI calls `/api/chat`. In local development this is served by the local Node wrapper; on Vercel it is served
+by Vercel API Functions. Both paths call your own Dify App API server-side. PromptCheckup does not include model
+credits, hosted inference, a database, login, or cloud history.
 
-v0.2.1 adds GitHub Actions CI for `npm ci`, `npm run build`, and `npm audit --omit=dev`.
-Runtime features are unchanged from v0.2.0.
-
-The v0.3 branch adds Vercel demo deployment support with Vercel API Functions, a demo access code, and input
-length limits. See [docs/vercel-deployment.md](docs/vercel-deployment.md).
-The initial Vercel demo uses the Dify Chat API in blocking mode, so complex reports can take a long time and may
-hit upstream or serverless timeout limits.
+PromptCheckup v0.3.0 adds Vercel demo deployment support while keeping the local Web UI workflow available. The
+hosted demo path uses Vercel API Functions, demo access-code protection, and input length limits. See
+[docs/vercel-deployment.md](docs/vercel-deployment.md). The initial Vercel demo uses the Dify Chat API in blocking
+mode, so complex reports can take a long time and may hit upstream or serverless timeout limits.
 
 ## Features
 
@@ -83,6 +82,8 @@ and [docs/local-wrapper.md](docs/local-wrapper.md).
 
 ## Quick Start
 
+### Local Development
+
 1. Clone this repository.
 2. Import `dify/prompt-checkup.yml` into Dify.
 3. Configure the model provider inside your own Dify workspace.
@@ -114,6 +115,33 @@ http://localhost:5173
 
 You must use your own Dify App API Key. Model usage and cost are handled by your own Dify workspace and model
 provider configuration. Do not commit `.env`.
+
+### Vercel Demo Deployment
+
+1. Import the GitHub repository into Vercel.
+2. Use the repository root directory `./`.
+3. Confirm build settings:
+
+```text
+Framework Preset: Vite
+Build Command: npm run build --workspace web
+Output Directory: web/dist
+```
+
+4. Configure Vercel Environment Variables:
+
+```env
+DIFY_API_BASE_URL=https://api.dify.ai/v1
+DIFY_API_KEY=your_dify_app_api_key_here
+DIFY_USER=local-user
+DEMO_ACCESS_CODE=change_me_for_public_demo
+```
+
+5. Deploy and open the generated Vercel URL.
+6. Enter the configured demo access code in the Web UI before running diagnosis.
+
+Store real values only in Vercel Environment Variables. Do not commit `.env`, `server/.env`, Dify keys, model
+provider keys, or real demo access codes to GitHub.
 
 ## Import into Dify
 
@@ -147,9 +175,10 @@ Vercel deployment notes are in [docs/vercel-deployment.md](docs/vercel-deploymen
 
 ## Security
 
-- `DIFY_API_KEY` is only read by the local backend.
-- The browser calls local `/api/chat`.
+- `DIFY_API_KEY` is only read by the local backend or Vercel API Functions.
+- The browser calls `/api/chat`.
 - The frontend must not expose a Dify API Key.
+- Hosted demo requests send the demo access code through `x-demo-access-code`.
 - `.env` is ignored by git.
 - Do not commit `.env`, Dify App API keys, model provider keys, or GitHub tokens.
 - The Vercel demo access code is lightweight protection for preview sharing, not full authentication, per-user

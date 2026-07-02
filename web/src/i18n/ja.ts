@@ -141,7 +141,7 @@ export const ja: Dictionary = {
   footer: {
     difyTemplate: 'Dify Template · 準備中',
     documentation: 'Documentation',
-    localWebUi: 'ローカル Web UI',
+    localWebUi: 'Vercel デモデプロイ',
     roadmap: 'Roadmap',
     lines: [
       'Dify Chatflow で構築された多言語プロンプト診断・改善ツール。',

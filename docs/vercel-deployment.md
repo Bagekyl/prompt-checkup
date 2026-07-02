@@ -16,9 +16,11 @@ The browser still calls `/api/chat`. It never calls Dify directly and never rece
 
 1. Push the v0.3 branch, then merge to `main` after review and manual testing.
 2. Import the GitHub repository into Vercel.
-3. Confirm build settings:
+3. Confirm project settings:
 
 ```text
+Root Directory: ./
+Framework Preset: Vite
 Build Command: npm run build --workspace web
 Output Directory: web/dist
 ```
@@ -36,6 +38,13 @@ DEMO_ACCESS_CODE=change_me_for_public_demo
 6. Open the generated Vercel URL.
 
 Do not commit real environment values to GitHub.
+
+## Preview and Production
+
+- Preview Deployments are created for pull requests and feature branches.
+- Production Deployments are created from `main` after the PR is merged.
+- Configure the same required environment variables for both Preview and Production if both environments should run real diagnosis.
+- Use separate `DEMO_ACCESS_CODE` values when you want different sharing scopes for Preview and Production.
 
 ## Safe Sharing
 

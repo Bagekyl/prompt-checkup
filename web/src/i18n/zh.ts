@@ -133,7 +133,7 @@ export const zh: Dictionary = {
   footer: {
     difyTemplate: 'Dify Template · 即将上线',
     documentation: 'Documentation',
-    localWebUi: 'Local Web UI',
+    localWebUi: 'Vercel Demo Deployment',
     roadmap: 'Roadmap',
     lines: [
       '基于 Dify Chatflow 的多语言 Prompt 体检与优化工具。',
