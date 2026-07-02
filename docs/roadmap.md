@@ -42,21 +42,36 @@ Out of scope:
 
 ## v0.3.0 - Vercel Demo Deployment
 
-- Prepare a hosted demo deployment path for the Web UI
-- Keep Dify API keys server-side
-- Document environment variable setup for hosted demo usage
-- Keep local development workflow available
+Completed in v0.3.0:
 
-## v0.4.0 - Structured Dify Output
+- Prepared a hosted demo deployment path for the Web UI
+- Added Vercel API Functions for `/api/health` and `/api/chat`
+- Added access-code protected demo sharing
+- Added input length limits for public demo safety
+- Added Vercel deployment guide and safe sharing notes
+- Kept Dify API keys server-side
+- Documented environment variable setup for hosted demo usage
+- Kept local development workflow available
+
+## v0.4.0 - Streaming Response
+
+- Add streaming response support for the Dify Chat API
+- Stream long diagnosis reports progressively in the Web UI
+- Improve perceived latency and reduce blocking-mode timeout risk
+- Improve loading, timeout, and retry states
+
+## v0.5.0 - Structured Dify Output and Flow Optimization
 
 - Improve the Dify Flow output contract
 - Add stable structured fields or explicit Markdown markers for `optimized_prompt` and `advanced_prompt`
+- Reduce unnecessary LLM-node latency where possible
 - Restore dedicated optimized / advanced prompt copy actions after backend output is machine-readable
 - Make review-depth modes produce more clearly differentiated outputs
+- Consider a fast demo mode for public Vercel sharing
 - Improve consistency of Chinese, English, and Japanese report sections
 - Ensure optimized / advanced prompts are wrapped consistently in fenced code blocks or structured fields
 
-## v0.5.0 - Report Reading Experience
+## v0.6.0 - Report Reading Experience
 
 - Improve report section layout
 - Add score / risk / severity badges
@@ -64,7 +79,7 @@ Out of scope:
 - Add collapsible report sections
 - Improve Markdown export formatting
 
-## v0.6.0 - Deployment and Reproducibility
+## v0.7.0 - Deployment and Reproducibility
 
 - Add clearer setup and troubleshooting guides
 - Add environment validation
@@ -72,7 +87,7 @@ Out of scope:
 - Add production build instructions
 - Keep deployment guidance focused on secure API key handling
 
-## v0.7.0 - Multilingual Expansion
+## v0.8.0 - Multilingual Expansion
 
 - Improve i18n architecture
 - Add more UI languages
@@ -80,7 +95,7 @@ Out of scope:
 - Standardize UI language vs report output language behavior
 - Improve Dify Flow language-control prompts
 
-## v0.8.0 - Prompt Workspace
+## v0.9.0 - Prompt Workspace
 
 - Add local diagnosis history
 - Add saved prompt templates

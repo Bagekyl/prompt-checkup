@@ -4,7 +4,9 @@ import ReactMarkdown from 'react-markdown';
 import type { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import type { Dictionary } from '../i18n';
+import type { ReportErrorDetails } from '../lib/errorDisplay';
 import { useProgressiveText } from '../lib/progressiveText';
+import { normalizeReportDisplayMarkdown } from '../lib/reportDisplay';
 import type { ReportStatus } from './MockControls';
 
 export type ReportContent = {
@@ -15,7 +17,7 @@ export type ReportContent = {
 };
 
 type ReportPanelProps = {
-  errorMessage?: string;
+  errorDetails?: ReportErrorDetails | null;
   latestAssistantAnswer?: string;
   report: ReportContent | null;
   showToast: (message: string) => void;
@@ -33,8 +35,8 @@ const markdownComponents: Components = {
   }
 };
 
-export default function ReportPanel({ errorMessage, latestAssistantAnswer, report, showToast, status, t }: ReportPanelProps) {
-  const markdown = report?.markdown || '';
+export default function ReportPanel({ errorDetails, latestAssistantAnswer, report, showToast, status, t }: ReportPanelProps) {
+  const markdown = normalizeReportDisplayMarkdown(report?.markdown || '');
   const badgeLabel = getReportBadgeLabel(status, report, t);
   const visibleReport = useProgressiveText(status === 'report' ? markdown : '', {
     chunkSize: 42,
@@ -108,7 +110,7 @@ export default function ReportPanel({ errorMessage, latestAssistantAnswer, repor
       <div className="min-h-[560px] p-5">
         {status === 'empty' ? <EmptyState t={t} /> : null}
         {status === 'loading' ? <LoadingState t={t} /> : null}
-        {status === 'error' ? <ErrorState message={errorMessage} t={t} /> : null}
+        {status === 'error' ? <ErrorState error={errorDetails} t={t} /> : null}
         {status === 'report' ? (
           <article
             aria-live="polite"
@@ -193,11 +195,24 @@ function LoadingState({ t }: { t: Dictionary }) {
   );
 }
 
-function ErrorState({ message, t }: { message?: string; t: Dictionary }) {
+function ErrorState({ error, t }: { error?: ReportErrorDetails | null; t: Dictionary }) {
   return (
     <div className="rounded-3xl border border-rose-100 bg-rose-50 p-6">
-      <p className="text-sm font-semibold text-rose-700">{t.report.errorTitle}</p>
-      <p className="mt-2 text-sm leading-6 text-rose-600">{message || t.report.errorDescription}</p>
+      <p className="text-sm font-semibold text-rose-700">{error?.title || t.report.errorTitle}</p>
+      <p className="mt-2 whitespace-pre-wrap break-words text-sm leading-6 text-rose-600">
+        {error?.description || t.report.errorDescription}
+      </p>
+      {typeof error?.status === 'number' ? (
+        <p className="mt-3 inline-flex rounded-full bg-white/80 px-3 py-1 text-xs font-semibold text-rose-700">
+          {t.report.errorStatusLabel}: {error.status}
+        </p>
+      ) : null}
+      {error?.hint ? (
+        <div className="mt-4 rounded-2xl border border-rose-100 bg-white/70 p-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-rose-500">{t.report.errorHintLabel}</p>
+          <p className="mt-1 whitespace-pre-wrap break-words text-sm leading-6 text-rose-600">{error.hint}</p>
+        </div>
+      ) : null}
     </div>
   );
 }

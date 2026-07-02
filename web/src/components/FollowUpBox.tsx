@@ -105,7 +105,7 @@ export default function FollowUpBox({
       {errorMessage ? (
         <div className="mt-4 rounded-3xl border border-rose-100 bg-rose-50 px-4 py-3">
           <p className="text-sm font-semibold text-rose-700">{t.followUp.errorTitle}</p>
-          <p className="mt-1 text-sm leading-6 text-rose-600">{errorMessage}</p>
+          <p className="mt-1 whitespace-pre-wrap break-words text-sm leading-6 text-rose-600">{errorMessage}</p>
         </div>
       ) : null}
 

@@ -42,6 +42,12 @@ export const zh: Dictionary = {
       label: '背景信息',
       placeholder: '补充业务背景、用户对象、输入来源或限制条件。'
     },
+    demoAccessCode: {
+      label: '试用访问码',
+      placeholder: '公开 Demo 需要访问码',
+      clear: '清除访问码',
+      helper: '访问码只保存在本机浏览器 localStorage，并通过请求 header 发送。'
+    },
     outputRequirements: {
       label: '输出要求',
       placeholder: '说明你希望模型输出 Markdown、表格、JSON、引用或固定结构。'
@@ -72,6 +78,22 @@ export const zh: Dictionary = {
     loadingDescription: '本地 wrapper 正在调用 Dify Chatflow，并等待诊断报告返回。',
     errorTitle: '诊断请求失败',
     errorDescription: '请求失败。请检查 Dify API Key、模型供应商配置或网络状态。',
+    errorStatusLabel: '状态',
+    errorHintLabel: '建议',
+    errors: {
+      accessCodeTitle: '访问码无效或缺失',
+      accessCodeDescription: '请填写正确的试用访问码后再试。',
+      inputTooLongTitle: '输入内容过长',
+      inputTooLongDescription: '请缩短待评估 Prompt、背景信息或输出要求后再试。',
+      networkTitle: '网络请求失败',
+      networkDescription: '请检查网络连接，或稍后重试。',
+      serverConfigTitle: '服务端配置不完整',
+      serverConfigDescription: 'Dify API Key 尚未配置。请检查 Vercel Environment Variables。',
+      timeoutTitle: '诊断请求超时',
+      timeoutDescription: 'Dify Chatflow 或上游模型响应时间过长。',
+      timeoutHint: '复杂报告在 blocking mode 下可能需要较长时间。请尝试缩短 Prompt、使用较轻诊断模式，或稍后重试。',
+      unknownTitle: '诊断请求失败'
+    },
     difyErrorHint: '请求失败。请检查 Dify API Key、模型供应商配置或网络状态。',
     badges: {
       mock: '模拟报告',
@@ -111,7 +133,7 @@ export const zh: Dictionary = {
   footer: {
     difyTemplate: 'Dify Template · 即将上线',
     documentation: 'Documentation',
-    localWebUi: 'Local Web UI',
+    localWebUi: 'Vercel Demo Deployment',
     roadmap: 'Roadmap',
     lines: [
       '基于 Dify Chatflow 的多语言 Prompt 体检与优化工具。',

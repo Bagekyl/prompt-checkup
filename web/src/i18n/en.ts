@@ -42,6 +42,12 @@ export const en: Dictionary = {
       label: 'Context',
       placeholder: 'Add business context, audience, input source, or constraints.'
     },
+    demoAccessCode: {
+      label: 'Demo access code',
+      placeholder: 'Required for public demos',
+      clear: 'Clear code',
+      helper: 'The access code is stored only in localStorage and sent through a request header.'
+    },
     outputRequirements: {
       label: 'Output Requirements',
       placeholder: 'Describe Markdown, tables, JSON, citations, or fixed output structure.'
@@ -72,6 +78,22 @@ export const en: Dictionary = {
     loadingDescription: 'The local wrapper is calling your Dify Chatflow and waiting for the report.',
     errorTitle: 'Diagnosis request failed',
     errorDescription: 'Request failed. Please check your Dify API key, model provider configuration, or network connection.',
+    errorStatusLabel: 'Status',
+    errorHintLabel: 'Hint',
+    errors: {
+      accessCodeTitle: 'Invalid or missing access code',
+      accessCodeDescription: 'Enter the correct demo access code and try again.',
+      inputTooLongTitle: 'Input is too long',
+      inputTooLongDescription: 'Shorten the prompt, context, or output requirements and try again.',
+      networkTitle: 'Network request failed',
+      networkDescription: 'Check your network connection or retry later.',
+      serverConfigTitle: 'Server configuration is incomplete',
+      serverConfigDescription: 'Dify API Key is not configured. Check Vercel Environment Variables.',
+      timeoutTitle: 'Diagnosis request timed out',
+      timeoutDescription: 'The Dify Chatflow or upstream model took too long to respond.',
+      timeoutHint: 'Complex reports may take a long time in blocking mode. Try a shorter prompt, a lighter review mode, or retry later.',
+      unknownTitle: 'Diagnosis request failed'
+    },
     difyErrorHint: 'Request failed. Please check your Dify API key, model provider configuration, or network connection.',
     badges: {
       mock: 'MOCK REPORT',
@@ -118,7 +140,7 @@ export const en: Dictionary = {
   footer: {
     difyTemplate: 'Dify Template · Coming soon',
     documentation: 'Documentation',
-    localWebUi: 'Local Web UI',
+    localWebUi: 'Vercel Demo Deployment',
     roadmap: 'Roadmap',
     lines: [
       'A multilingual prompt diagnosis and optimization workflow built with Dify Chatflow.',

@@ -1,5 +1,39 @@
 # Changelog
 
+## [0.3.0] - 2026-07-02
+
+### Added
+
+- Added Vercel API Functions for `/api/chat` and `/api/health`.
+- Added protected demo access-code support.
+- Added input length validation for public demo safety.
+- Added Vercel deployment documentation.
+- Added localStorage persistence for demo access code where applicable.
+
+### Changed
+
+- Updated the Web UI for cloud demo usage.
+- Improved server-side Dify API sharing between local and Vercel environments.
+- Added Vercel Function max duration configuration for `/api/chat`.
+- Improved timeout messaging for long-running Dify blocking requests.
+- Improved error display for long-running Dify blocking requests.
+- Updated roadmap priority for streaming response and Dify Flow optimization.
+- Documented blocking-mode timeout limitations for the Vercel demo.
+
+### Fixed
+
+- Fixed multilingual task type submission by sending canonical Dify values.
+- Fixed report state preservation during follow-up.
+- Fixed follow-up message bubble layout.
+- Fixed error card layout for 400 / 403 / 504 cases.
+- Fixed duplicate report title display in the rendered report view.
+
+### Known Limitations
+
+- v0.3.0 still uses Dify Chat API in blocking mode.
+- Complex reports may take 40-60 seconds or occasionally hit upstream/serverless timeout limits.
+- Demo access code is lightweight protection, not full authentication or per-user quota.
+
 ## v0.2.1 - CI Setup
 
 ### Added

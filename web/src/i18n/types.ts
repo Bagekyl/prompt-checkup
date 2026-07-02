@@ -31,6 +31,10 @@ export type Dictionary = {
       start: string;
     };
     context: FieldCopy;
+    demoAccessCode: FieldCopy & {
+      clear: string;
+      helper: string;
+    };
     description: string;
     kicker: string;
     outputRequirements: FieldCopy;
@@ -79,6 +83,22 @@ export type Dictionary = {
     emptyDescription: string;
     emptyTitle: string;
     errorDescription: string;
+    errorHintLabel: string;
+    errors: {
+      accessCodeDescription: string;
+      accessCodeTitle: string;
+      inputTooLongDescription: string;
+      inputTooLongTitle: string;
+      networkDescription: string;
+      networkTitle: string;
+      serverConfigDescription: string;
+      serverConfigTitle: string;
+      timeoutDescription: string;
+      timeoutHint: string;
+      timeoutTitle: string;
+      unknownTitle: string;
+    };
+    errorStatusLabel: string;
     errorTitle: string;
     kicker: string;
     loadingDescription: string;

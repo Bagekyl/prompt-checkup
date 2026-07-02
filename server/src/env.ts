@@ -31,3 +31,11 @@ export const env = {
 export function isDifyConfigured() {
   return Boolean(env.difyApiKey && env.difyApiKey !== 'your_dify_app_api_key_here');
 }
+
+export function getDifyClientConfig() {
+  return {
+    apiBaseUrl: env.difyApiBaseUrl,
+    apiKey: env.difyApiKey,
+    defaultUser: env.difyUser
+  };
+}
